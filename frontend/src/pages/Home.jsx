@@ -126,14 +126,11 @@ function FeedPage() {
           author: {
             name: user.name,
             profession: user.profileType,
-            // fallback for other fields
             stats: { percentile: 0 }
           },
-          role: user.profileType, // or fetch detailed role
+          role: user.profileType,
           content: newPost.content,
           likes: 0,
-          comments: 0,
-          timestamp: Date.now(),
           comments: 0,
           timestamp: Date.now(),
           isLiked: false,

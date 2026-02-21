@@ -2,9 +2,9 @@ services:
   - type: web
     name: the-senses-backend
     runtime: node
-    rootDir: Backend
-    buildCommand: npm install
-    startCommand: node server.js
+    # Run from REPO ROOT so ../packages/core resolves correctly
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && node server.js
     envVars:
       - key: NODE_ENV
         value: production
