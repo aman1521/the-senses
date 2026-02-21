@@ -80,6 +80,11 @@ app.use((req, res, next) => {
     if (!req.timedout) next();
 });
 
+// Health Check — used by Railway & Vercel
+app.get('/api/v1/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString(), env: process.env.NODE_ENV || 'development' });
+});
+
 // Routes
 // Routes V1
 const v1Router = express.Router();

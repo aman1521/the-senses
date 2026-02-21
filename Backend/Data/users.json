@@ -1,16 +1,80 @@
 [
-    {
-        "_id": "64f1b2c3e4d5f6a7b8c9d0e1",
-        "name": "Mock Thinker",
-        "username": "mockthinker",
-        "email": "mock@example.com",
-        "role": "user",
-        "profileType": "AI Strategist",
-        "profilePicture": "https://api.dicebear.com/7.x/avataaars/svg?seed=mock",
-        "verified": true,
-        "stats": {
-            "percentile": 95
-        },
-        "createdAt": "2023-01-01T00:00:00.000Z"
-    }
+  {
+    "_id": "64f1b2c3e4d5f6a7b8c9d0e1",
+    "name": "Mock Thinker",
+    "username": "mockthinker",
+    "email": "mock@example.com",
+    "role": "user",
+    "profileType": "AI Strategist",
+    "profilePicture": "https://api.dicebear.com/7.x/avataaars/svg?seed=mock",
+    "verified": true,
+    "stats": {
+      "percentile": 95
+    },
+    "createdAt": "2023-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "af1eec6a-ef71-41c2-a928-994c2f38d58c",
+    "name": "Rishita Trivedi",
+    "email": "rishitatrivedi@gmail.com",
+    "username": "rishitatrivedi",
+    "password": "$2a$12$tO2TD2/o4W/6Ms.0IQuZ7eeM25Ol/iJCqkndYTbjIx2rUHYVx2sB2",
+    "profileType": "content-writer",
+    "experienceLevel": "mid",
+    "company": null,
+    "role": "user",
+    "createdAt": "2026-02-21T14:09:09.109Z",
+    "updatedAt": "2026-02-21T14:09:09.109Z"
+  },
+  {
+    "_id": "bc2ffd7b-1082-4d33-b039-105d3e49e64d",
+    "name": "Inderjit Singh",
+    "email": "geminipre073@gmail.com",
+    "username": "inderjitsingh",
+    "password": "$2a$12$Kox18yZqA1oF1rlsK1NC7O1M1CehK5MovJmFerQFC4pbCDmbR0f72",
+    "profileType": "full-stack-developer",
+    "experienceLevel": "intern",
+    "company": null,
+    "role": "user",
+    "verified": false,
+    "stats": {
+      "percentile": 0
+    },
+    "createdAt": "2026-02-21T14:27:15.000Z",
+    "updatedAt": "2026-02-21T14:27:15.000Z"
+  },
+  {
+    "_id": "cd3ffe8c-2193-5e44-c14a-216e4f5af75e",
+    "name": "Aman Gupta",
+    "email": "aman@thesenses.dev",
+    "username": "amangupta",
+    "password": "$2a$12$8SycNQ807w1u3AFUhm3Cd.hyTAgJOmpROS3fPXf.gtNecL1mu5uhm",
+    "profileType": "software-engineer",
+    "experienceLevel": "senior",
+    "company": null,
+    "role": "admin",
+    "verified": true,
+    "stats": {
+      "percentile": 99
+    },
+    "createdAt": "2026-02-21T14:27:15.000Z",
+    "updatedAt": "2026-02-21T14:27:15.000Z"
+  },
+  {
+    "_id": "de4fff9d-3204-6f55-d25b-327f5f6bg86f",
+    "name": "Mansi Sharma",
+    "email": "mansi@thesenses.dev",
+    "username": "mansisharma",
+    "password": "$2a$12$nIanUom3.UgHYI91F99YcuAvGSYvkJUPqKudc0dvn5/rEtTzn0S56",
+    "profileType": "product-manager",
+    "experienceLevel": "mid",
+    "company": null,
+    "role": "user",
+    "verified": true,
+    "stats": {
+      "percentile": 72
+    },
+    "createdAt": "2026-02-21T14:27:15.000Z",
+    "updatedAt": "2026-02-21T14:27:15.000Z"
+  }
 ]
