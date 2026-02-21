@@ -1,99 +1,134 @@
 // controllers/leaderboardController.js
-const User = require("../models/User");
-const Attempt = require("../models/Attempt");
+// Optimized Leaderboard with DB-driven aggregation and caching
 
-// GET /api/leaderboard/dimension?dimension=logic&limit=10
+const User = require("../models/User");
+const IntelligenceResult = require("../models/IntelligenceResult");
+
+// Simple in-memory cache — avoids hammering DB on every page load
+// In production, replace with Redis
+const CACHE_TTL_MS = 60 * 1000; // 60 seconds
+const leaderboardCache = new Map(); // key -> { data, expiresAt }
+
+function getCached(key) {
+  const entry = leaderboardCache.get(key);
+  if (entry && Date.now() < entry.expiresAt) return entry.data;
+  leaderboardCache.delete(key);
+  return null;
+}
+function setCache(key, data) {
+  leaderboardCache.set(key, { data, expiresAt: Date.now() + CACHE_TTL_MS });
+}
+
+// GET /api/v1/leaderboard/dimension?dimension=logic&limit=10
 exports.byDimension = async (req, res) => {
   try {
+    const Attempt = require("../models/Attempt");
     const { dimension = "logic", limit = 10 } = req.query;
-    // compute per-user average bin score (from Attempts)
+    const safeLimit = Math.min(Number(limit) || 10, 100);
+
+    const cacheKey = `dim:${dimension}:${safeLimit}`;
+    const cached = getCached(cacheKey);
+    if (cached) return res.json(cached);
+
+    // Aggregate per-user average for the requested dimension bin
     const ag = await Attempt.aggregate([
-      { $match: { "rubric.bins": { $exists: true } } },
-      { $project: { user: 1, score: 1, bins: "$rubric.bins" } },
+      { $match: { [`rubric.bins.${dimension}`]: { $exists: true, $gt: 0 } } },
       {
         $group: {
           _id: "$user",
-          avgBin: { $avg: { $ifNull: [`$rubric.bins.${dimension}`, 0] } },
+          avgBin: { $avg: `$rubric.bins.${dimension}` },
           avgScore: { $avg: "$score" },
           attempts: { $sum: 1 }
         }
       },
       { $sort: { avgBin: -1, avgScore: -1 } },
-      { $limit: Number(limit) }
+      { $limit: safeLimit }
     ]);
-    // join user names
-    const users = await User.find({ _id: { $in: ag.map(a => a._id) } });
+
+    const userIds = ag.map(a => a._id);
+    const users = await User.find({ _id: { $in: userIds } })
+      .select("name username profilePicture verified stats")
+      .lean();
+
     const usersMap = {};
-    users.forEach(u => usersMap[String(u._id)] = u);
+    users.forEach(u => (usersMap[String(u._id)] = u));
+
     const rows = ag.map(a => ({
-      userId: a._id, name: usersMap[String(a._id)]?.name || 'Unknown', avgBin: a.avgBin, avgScore: a.avgScore, attempts: a.attempts
+      userId: a._id,
+      name: usersMap[String(a._id)]?.name || "Unknown",
+      username: usersMap[String(a._id)]?.username,
+      avatar: usersMap[String(a._id)]?.profilePicture,
+      verified: usersMap[String(a._id)]?.verified || false,
+      avgBin: Math.round(a.avgBin),
+      avgScore: Math.round(a.avgScore),
+      attempts: a.attempts
     }));
+
+    setCache(cacheKey, rows);
     res.json(rows);
   } catch (e) {
+    console.error("[Leaderboard byDimension]", e.message);
     res.status(500).json({ error: e.message });
   }
 };
 
-// GET /api/leaderboard (Global High Scores with Trust Data)
+// GET /api/v1/leaderboard/global?badge=...&verifiedOnly=true&minTrustScore=70&jobProfile=developer
 exports.getGlobalLeaderboard = async (req, res) => {
   try {
     const { verifiedOnly, minTrustScore, badge, jobProfile } = req.query;
-
-    // Import IntelligenceResult model
-    const IntelligenceResult = require("../models/IntelligenceResult");
     const { BADGE_TIERS } = require("../ai-agents/ranking/rankEngine");
 
-    // Anti-abuse: Only highest normalized score per user counts
-    const aggregationPipeline = [];
+    const cacheKey = `global:${jobProfile}:${badge}:${verifiedOnly}:${minTrustScore}`;
+    const cached = getCached(cacheKey);
+    if (cached) return res.json(cached);
 
-    // Filter by Job Profile / Category if requested
-    if (jobProfile && jobProfile !== 'global') {
-      aggregationPipeline.push({ $match: { "rank.field": jobProfile } });
+    // Build aggregation pipeline — best score per user only
+    const pipeline = [];
+
+    if (jobProfile && jobProfile !== "global") {
+      pipeline.push({ $match: { "rank.field": jobProfile } });
     }
 
-    aggregationPipeline.push(
-      {
-        $sort: { normalizedScore: -1, trustScore: -1, createdAt: 1 }
-      },
-      {
-        $group: {
-          _id: "$userId",
-          best: { $first: "$$ROOT" }
-        }
-      },
-      {
-        $replaceRoot: { newRoot: "$best" }
-      },
-      {
-        $sort: { normalizedScore: -1, trustScore: -1 }
-      },
-      {
-        $limit: 50
-      }
+    // Only finalized results
+    pipeline.push({ $match: { isFinalized: true } });
+
+    pipeline.push(
+      { $sort: { normalizedScore: -1, trustScore: -1, createdAt: 1 } },
+      // Keep only the one best result per user
+      { $group: { _id: "$userId", best: { $first: "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$best" } },
+      { $sort: { normalizedScore: -1, trustScore: -1 } },
+      { $limit: 100 }
     );
 
-    const topResults = await IntelligenceResult.aggregate(aggregationPipeline);
+    const topResults = await IntelligenceResult.aggregate(pipeline);
 
-    // Get user details
-    // User model is already imported at the top of the file
+    // Compute total pool size for real percentile
+    const totalCount = await IntelligenceResult.countDocuments({ isFinalized: true });
+
+    // Fetch user profiles
     const userIds = topResults.map(r => r.userId);
     const users = await User.find({ _id: { $in: userIds } })
-      .select('name trustLevel humanLikelihood');
+      .select("name username profilePicture verified trustLevel currentRole")
+      .lean();
 
     const usersMap = {};
-    users.forEach(u => usersMap[String(u._id)] = u);
+    users.forEach(u => (usersMap[String(u._id)] = u));
 
-    // Build leaderboard data
-    let leaderboardData = topResults.map(result => {
+    // Build leaderboard rows
+    let leaderboardData = topResults.map((result, index) => {
       const user = usersMap[String(result.userId)] || {};
 
-      // Calculate percentile (simplified)
-      const percentile = Math.min(100, Math.round(result.normalizedScore * 0.9));
+      // Real percentile: rank out of totalCount
+      const rankPosition = index + 1;
+      const realPercentile = totalCount > 0
+        ? Math.round(((totalCount - rankPosition) / totalCount) * 100)
+        : 0;
 
-      // Determine badge tier
-      let badgeTier = BADGE_TIERS.starter;
+      // Determine badge display
+      let badgeTier = BADGE_TIERS.observer;
       for (const [key, tier] of Object.entries(BADGE_TIERS)) {
-        if (percentile >= tier.min) {
+        if (realPercentile >= tier.min) {
           badgeTier = { ...tier, tier: key };
           break;
         }
@@ -101,13 +136,19 @@ exports.getGlobalLeaderboard = async (req, res) => {
 
       return {
         _id: result.userId,
-        name: user.name || 'Unknown',
-        jobProfile: result.rank?.field || result.jobProfile || "General",
+        name: user.name || "Unknown",
+        username: user.username,
+        avatar: user.profilePicture,
+        verified: user.verified || false,
+        currentRole: user.currentRole || result.rank?.field || "General",
+        jobProfile: result.rank?.field || "General",
         score: result.finalScore || result.normalizedScore,
         normalizedScore: result.normalizedScore,
-        trustScore: result.trustScore || 50, // Critical for frontend using `user.trustScore`
+        trustScore: result.trustScore || 50,
+        rank: rankPosition,
+        percentile: realPercentile,
         trust: {
-          level: user.trustLevel || 'medium',
+          level: user.trustLevel || "medium",
           score: result.trustScore || 50,
           label: (result.trustScore || 50) >= 80 ? "High Trust" : (result.trustScore || 50) >= 50 ? "Medium Trust" : "Low Trust",
           isVerified: (result.trustScore || 50) >= 80,
@@ -115,31 +156,28 @@ exports.getGlobalLeaderboard = async (req, res) => {
         badge: {
           tier: result.badge || badgeTier.tier,
           emoji: badgeTier.emoji,
-          name: badgeTier.name,
+          name: result.badge || badgeTier.name,
           color: badgeTier.color,
         },
-        percentile,
       };
     });
 
     // Apply filters
-    if (verifiedOnly === 'true') {
+    if (verifiedOnly === "true") {
       leaderboardData = leaderboardData.filter(u => u.trust.isVerified);
     }
-
     if (minTrustScore) {
       leaderboardData = leaderboardData.filter(u => u.trust.score >= Number(minTrustScore));
     }
-
     if (badge) {
       leaderboardData = leaderboardData.filter(u => u.badge.tier === badge);
     }
 
-    // Take top 50 (not 10, more fun)
     const topUsers = leaderboardData.slice(0, 50);
-
+    setCache(cacheKey, topUsers);
     res.json(topUsers);
   } catch (err) {
+    console.error("[Leaderboard Global]", err.message);
     res.status(500).json({ error: err.message });
   }
 };

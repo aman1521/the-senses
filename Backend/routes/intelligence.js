@@ -189,6 +189,29 @@ router.post("/analyze-frame", upload.single('frame'), async (req, res, next) => 
             }
         }
 
+        const integrityPenalty = analysis.riskLevel === "high" ? 15 :
+            analysis.riskLevel === "medium" ? 5 : 0;
+
+        // Persist integrity event if risk was detected
+        if (!analysis.clean && req.body.sessionId) {
+            try {
+                await IntegrityEvent.create({
+                    sessionId: req.body.sessionId,
+                    stage: 'video',
+                    eventType: analysis.devicesFound?.length ? 'device_detected' : 'looking_away',
+                    severity: analysis.riskLevel,
+                    details: JSON.stringify({
+                        flagReason: analysis.flagReason,
+                        devicesFound: analysis.devicesFound,
+                        faceVisible: analysis.faceVisible,
+                        integrityPenalty
+                    })
+                });
+            } catch (dbErr) {
+                console.error("Failed to persist frame integrity event:", dbErr.message);
+            }
+        }
+
         return successResponse(res, {
             analysis: {
                 clean: analysis.clean,
@@ -198,9 +221,7 @@ router.post("/analyze-frame", upload.single('frame'), async (req, res, next) => 
                 riskLevel: analysis.riskLevel,
                 flagReason: analysis.flagReason
             },
-            // Suggested integrity penalty
-            integrityPenalty: analysis.riskLevel === "high" ? 15 :
-                analysis.riskLevel === "medium" ? 5 : 0
+            integrityPenalty
         });
 
     } catch (error) {
@@ -458,6 +479,11 @@ router.post("/evaluate", auth(false), checkRetakeCooldown, async (req, res, next
             ctx.results.reflexMetrics = processReflexMetrics(req.body.meta.reflexData);
         }
 
+        // Add Vision Score if available (from Haptic Shadow / Motor Intelligence test)
+        if (req.body.meta?.visionScore != null) {
+            ctx.results.visionScore = req.body.meta.visionScore;
+        }
+
         /** 2️⃣ Idempotency guard */
         const { existing, hash } = await checkIdempotency(ctx);
         if (existing) {
@@ -631,6 +657,46 @@ router.post("/evaluate", auth(false), checkRetakeCooldown, async (req, res, next
             cheatingFlags: req.body.meta?.cheatingFlags || []
         });
         await testSession.save();
+
+        // --- Save Detailed Attempt Records per question (powers dimension leaderboard) ---
+        if (Array.isArray(req.body.detailedAnswers) && req.body.detailedAnswers.length > 0 && ctx.userId) {
+            const Attempt = require("../models/Attempt");
+            const sessionId = req.body.sessionId || `session-${Date.now()}`;
+            const attemptDocs = req.body.detailedAnswers.map(qa => ({
+                user: ctx.userId,
+                question: qa.questionId,
+                sessionId,
+                answerText: qa.userAnswer?.toString?.() || '',
+                isCorrect: qa.isCorrect || false,
+                timeSpentMs: qa.timeSpent || 0,
+                score: qa.isCorrect ? 100 : 0,
+                rubric: {
+                    bins: {
+                        logic: qa.isCorrect ? 75 : 25,
+                        creativity: qa.topic === 'creative' ? (qa.isCorrect ? 80 : 30) : 0,
+                        empathy: qa.topic === 'emotional' ? (qa.isCorrect ? 80 : 30) : 0,
+                        systemsThinking: qa.topic === 'systems' ? (qa.isCorrect ? 80 : 30) : 0,
+                        communication: qa.topic === 'communication' ? (qa.isCorrect ? 80 : 30) : 0,
+                    },
+                    reasoning: qa.isCorrect ? 'Correct answer' : 'Incorrect answer',
+                    maxScore: 100,
+                },
+                aiGraded: false,
+                integritySignals: {
+                    tabSwitches: req.body.meta?.violations || 0,
+                    pasteEvents: 0,
+                    suspiciouslyFast: (qa.timeSpent || 0) < 2000
+                },
+                profileSnapshot: { jobProfile: ctx.test.jobProfile, difficulty: ctx.test.difficulty }
+            }));
+            try {
+                await Attempt.insertMany(attemptDocs, { ordered: false });
+                console.log(`✅ Saved ${attemptDocs.length} Attempt records for session ${sessionId}`);
+            } catch (attemptErr) {
+                console.error('⚠️ Warning: Failed to save Attempt records:', attemptErr.message);
+                // Non-fatal — don't fail the whole evaluation
+            }
+        }
 
         // Save Integrity Events if provided
         if (req.body.meta?.cheatingFlags && Array.isArray(req.body.meta.cheatingFlags)) {
