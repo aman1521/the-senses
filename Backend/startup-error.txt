@@ -1,0 +1,16 @@
+=== Server Startup Log ===
+🔄 Loading server...
+✅ Server loaded successfully
+❌ UNCAUGHT EXCEPTION:
+Message: listen EADDRINUSE: address already in use :::5000
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (D:\The Senses (BE+FE)\Backend\node_modules\express\lib\application.js:635:24)
+    at Object.<anonymous> (D:\The Senses (BE+FE)\Backend\server.js:139:5)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)

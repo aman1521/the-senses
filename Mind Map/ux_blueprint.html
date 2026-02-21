@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Senses — Clickable UX Blueprint (Full)</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .blueprint-container {
+            max-width: 820px;
+            width: 100%;
+        }
+
+        .screen {
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            background: #111;
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        h1 {
+            color: #818cf8;
+        }
+
+        h2 {
+            color: #818cf8;
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        p {
+            color: #a1a1aa;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            background: #1e1e24;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 14px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-align: left;
+            position: relative;
+        }
+
+        .btn.disabled {
+            background: #2a1a1a;
+            border-color: #ef4444;
+            color: #fca5a5;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn.disabled::after {
+            content: '🚧 PENDING';
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .btn:hover:not(.disabled) {
+            background: #27272a;
+            border-color: #6366f1;
+        }
+
+        .btn::after {
+            content: '→';
+            position: absolute;
+            right: 14px;
+            opacity: 0.5;
+        }
+
+        .back-btn {
+            margin-top: 16px;
+            color: #666;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 13px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #18181b;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .badge.green {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .badge.purple {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+            border: 1px solid #818cf8;
+        }
+
+        .badge.red {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid #ef4444;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            background: #1e1e24;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #a1a1aa;
+        }
+
+        .nav-tab:hover {
+            border-color: #6366f1;
+            color: #fff;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid #222;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blueprint-container">
+
+        <!-- LANDING -->
+        <div id="landing" class="screen active">
+            <h1>THE SENSES</h1>
+            <p>Turn raw cognitive ability into verified career proof.</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('dashboard')">🧑‍💻 User Login → Dashboard</button>
+                <button class="btn" onclick="nav('sso_screen')">🔑 SSO Login (Google / GitHub / Microsoft)</button>
+                <button class="btn" onclick="nav('company_home')">🏢 Company / Recruiter Login</button>
+                <button class="btn" onclick="nav('public_profile')">🌍 View Public Profile (/u/alex)</button>
+                <button class="btn" onclick="nav('share_card')">🎴 View Share Card Preview</button>
+            </div>
+        </div>
+
+        <!-- SSO -->
+        <div id="sso_screen" class="screen">
+            <h2>🔑 Single Sign-On</h2>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('dashboard')">Continue with Google</button>
+                <button class="btn" onclick="nav('dashboard')">Continue with GitHub</button>
+                <button class="btn" onclick="nav('dashboard')">Continue with Microsoft</button>
+            </div>
+            <button class="back-btn" onclick="nav('landing')">← Back</button>
+        </div>
+
+        <!-- USER DASHBOARD -->
+        <div id="dashboard" class="screen">
+            <h2>🧑‍💻 User Dashboard</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-val">Top 15%</div>
+                    <div class="stat-label">Global Rank</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">845</div>
+                    <div class="stat-label">Signal Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">98%</div>
+                    <div class="stat-label">Integrity</div>
+                </div>
+            </div>
+            <div style="margin-bottom:14px;">
+                <span class="badge green">✅ Verified Thinker</span>
+                <span class="badge purple">⭐ Veteran</span>
+                <span class="badge purple">🏆 High Achiever</span>
+            </div>
+            <div class="nav-tabs">
+                <div class="nav-tab" onclick="nav('assessment_start')">🧠 Assessment</div>
+                <div class="nav-tab" onclick="nav('duel_start')">⚔️ Duels</div>
+                <div class="nav-tab" onclick="nav('feed')">🫧 Social Feed</div>
+                <div class="nav-tab" onclick="nav('messages')">💬 Messages</div>
+                <div class="nav-tab" onclick="nav('teams')">👥 Teams</div>
+                <div class="nav-tab" onclick="nav('premium')">💳 Premium</div>
+                <div class="nav-tab" onclick="nav('settings')">⚙️ Settings</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn disabled" onclick="alert('Pending: Global Search UI')">🔍 Search (Pending)</button>
+                <button class="btn disabled" onclick="alert('Pending: Notification Centre UI')">🔔 Notifications
+                    (Partial)</button>
+            </div>
+            <button class="back-btn" onclick="nav('landing')">Logout</button>
+        </div>
+
+        <!-- ASSESSMENT FLOW -->
+        <div id="assessment_start" class="screen">
+            <h2>🧠 Pre-Flight Check</h2>
+            <p>• Webcam Access: ✅<br>• Fullscreen Mode: Required<br>• Anti-Cheat (Vision Agent): Active<br>• Tab
+                Monitor: Active</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('assessment_active')">I Agree & Start Test (15m)</button>
+            </div>
+            <button class="back-btn" onclick="nav('dashboard')">Cancel</button>
+        </div>
+        <div id="assessment_active" class="screen">
+            <h2>⏱️ Assessment — Q3/15</h2>
+            <p>Identify the missing pattern in the logic sequence...</p>
+            <p style="color:#ef4444; font-size:12px;">🔴 Anti-Cheat: Gaze Tracking | Tab Events: 0</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('result')">Submit Answer</button>
+            </div>
+        </div>
+        <div id="result" class="screen">
+            <h2>🎉 Analysis Complete</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-val">92%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">+4%</div>
+                    <div class="stat-label">Growth</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">99%</div>
+                    <div class="stat-label">Integrity</div>
+                </div>
+            </div>
+            <p>Insight: You excelled in logic, hesitated on spatial patterns.</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('share_card')">Share Score Card 🎴</button>
+                <button class="btn" onclick="nav('dashboard')">Back to Dashboard</button>
+            </div>
+        </div>
+
+        <!-- DUELS -->
+        <div id="duel_start" class="screen">
+            <h2>⚔️ AI Battle Arena</h2>
+            <p>Opponent: <strong>CyberMind v9</strong> (Elo 1240)<br>Win Probability: 45%</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('duel_active')">⚔️ FIGHT!</button>
+            </div>
+            <button class="back-btn" onclick="nav('dashboard')">Retreat</button>
+        </div>
+        <div id="duel_active" class="screen">
+            <h2>⚔️ Duel in Progress</h2>
+            <p><strong>Q:</strong> In 4x + 2 = 18, x = ?</p>
+            <p style="font-size:12px; color:#f59e0b;">Opponent answered in 2.3s...</p>
+            <div class="btn-group">
+                <button class="btn" onclick="alert('VICTORY! +24 Elo'); nav('dashboard')">Answer: x = 4</button>
+            </div>
+        </div>
+
+        <!-- SOCIAL FEED -->
+        <div id="feed" class="screen">
+            <h2>🫧 Social Feed</h2>
+            <p>Global trending posts and thinking bubbles.</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('create_post')">✍️ Create Post</button>
+                <button class="btn" onclick="nav('bubble_view')">View Trending Bubble</button>
+                <button class="btn disabled" onclick="alert('Pending: Comment UI')">Comment (Pending)</button>
+                <button class="btn disabled" onclick="alert('Pending: Media Upload')">Upload Media (Pending)</button>
+            </div>
+            <button class="back-btn" onclick="nav('dashboard')">← Dashboard</button>
+        </div>
+        <div id="create_post" class="screen">
+            <h2>✍️ Create Post</h2>
+            <p>Share a thought (10–5000 chars). Select category, add tags.</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('feed')">Post → Feed</button>
+            </div>
+            <button class="back-btn" onclick="nav('feed')">← Back</button>
+        </div>
+        <div id="bubble_view" class="screen">
+            <h2>🫧 Bubble: "Is AI creativity real?"</h2>
+            <div style="text-align:left; background:#1a1a2e; border-radius:8px; padding:14px; margin-bottom:14px;">
+                <div
+                    style="padding:8px; border-radius:16px; background:#222; border:1px solid #333; margin-bottom:8px;">
+                    Root: Is AI creativity real?</div>
+                <div
+                    style="padding:8px; border-radius:16px; background:#222; border:1px solid #6366f1; margin-left:24px; margin-bottom:8px;">
+                    Branch: Define "real" first...</div>
+                <div
+                    style="padding:8px; border-radius:16px; border:1px dashed #ef4444; color:#fca5a5; margin-left:24px;">
+                    [Pending: Reply/Comment UI]</div>
+            </div>
+            <button class="back-btn" onclick="nav('feed')">← Back to Feed</button>
+        </div>
+
+        <!-- MESSAGES -->
+        <div id="messages" class="screen">
+            <h2>💬 Direct Messages</h2>
+            <p>Chat with connections. Real-time via WebSocket.</p>
+            <div style="background:#1a1a2e; border-radius:8px; padding:14px; text-align:left;">
+                <p style="color:#a5b4fc; margin:0;">Sarah (TechCorp): "Impressed by your profile..."</p>
+                <p style="font-size:11px; color:#666; margin:4px 0 0;">2m ago · ✓✓ Read</p>
+            </div>
+            <button class="back-btn" onclick="nav('dashboard')">← Dashboard</button>
+        </div>
+
+        <!-- TEAMS -->
+        <div id="teams" class="screen">
+            <h2>👥 Teams & Organizations</h2>
+            <div class="btn-group">
+                <button class="btn" onclick="alert('Team creation flow')">Create Team</button>
+                <button class="btn" onclick="alert('Team invite flow')">Send Team Invite</button>
+                <button class="btn" onclick="alert('Team leaderboard')">View Team Leaderboard</button>
+                <button class="btn" onclick="alert('Org management')">Manage Organization</button>
+            </div>
+            <button class="back-btn" onclick="nav('dashboard')">← Dashboard</button>
+        </div>
+
+        <!-- PREMIUM -->
+        <div id="premium" class="screen">
+            <h2>💳 Premium Membership (Stripe)</h2>
+            <p>Unlock: PDF Certificate, Advanced Analytics, Priority Recruiter Visibility.</p>
+            <div class="btn-group">
+                <button class="btn" onclick="alert('Stripe Checkout opens')">Buy Certified Report — $19</button>
+                <button class="btn" onclick="alert('Premium plan checkout')">Upgrade to Premium — $9/mo</button>
+            </div>
+            <button class="back-btn" onclick="nav('dashboard')">← Dashboard</button>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="settings" class="screen">
+            <h2>⚙️ Settings & Privacy</h2>
+            <div class="btn-group">
+                <button class="btn" onclick="alert('Profile edit form')">Edit Profile & Video Intro</button>
+                <button class="btn" onclick="alert('Privacy controls')">Privacy Controls</button>
+                <button class="btn" onclick="alert('Hiring visibility toggle')">Hiring Visibility</button>
+                <button class="btn" onclick="alert('Export data')">Download My Data</button>
+            </div>
+            <button class="back-btn" onclick="nav('dashboard')">← Dashboard</button>
+        </div>
+
+        <!-- SHARE CARD -->
+        <div id="share_card" class="screen">
+            <h2>🎴 Score Share Card</h2>
+            <div
+                style="background:linear-gradient(135deg,#1e1b4b,#0f172a); border:2px solid #6366f1; border-radius:12px; padding:24px; margin-bottom:16px;">
+                <div style="font-size:12px; color:#818cf8; letter-spacing:2px;">THE SENSES</div>
+                <div style="font-size:32px; font-weight:bold; margin:8px 0;">ELITE MIND</div>
+                <div style="color:#a5b4fc;">Top 15% Globally · Score: 845</div>
+                <div style="font-size:11px; color:#6366f1; margin-top:8px;">Integrity: 98% · Verified Thinker</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="alert('Twitter intent opens')">Share on Twitter/X</button>
+                <button class="btn" onclick="alert('Download PNG')">Download Card</button>
+                <button class="btn" onclick="nav('landing')">Back to Landing</button>
+            </div>
+        </div>
+
+        <!-- COMPANY -->
+        <div id="company_home" class="screen">
+            <h2>🏢 Recruiter Dashboard</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-val">42</div>
+                    <div class="stat-label">Candidates</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">780</div>
+                    <div class="stat-label">Avg Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">95%</div>
+                    <div class="stat-label">Integrity Avg</div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('talent_search')">Search Talent Pool</button>
+                <button class="btn" onclick="nav('candidate_profile')">View Candidate "Alex"</button>
+                <button class="btn" onclick="alert('Company Reputation dashboard')">Company Reputation Score</button>
+                <button class="btn" onclick="alert('Employee analytics')">Employee Analytics & Heatmap</button>
+            </div>
+            <button class="back-btn" onclick="nav('landing')">Logout</button>
+        </div>
+        <div id="talent_search" class="screen">
+            <h2>🔍 Talent Search</h2>
+            <p>Filter: Profession → Engineer | Score: 800+ | Rank: Top 20%</p>
+            <div class="btn-group">
+                <button class="btn" onclick="nav('candidate_profile')">→ Alex · Top 12% · Score 845</button>
+            </div>
+            <button class="back-btn" onclick="nav('company_home')">← Back</button>
+        </div>
+        <div id="candidate_profile" class="screen">
+            <h2>👤 Candidate: Alex</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-val" style="color:#10b981">98%</div>
+                    <div class="stat-label">Integrity</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">845</div>
+                    <div class="stat-label">Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">Top 12%</div>
+                    <div class="stat-label">Rank</div>
+                </div>
+            </div>
+            <p><em>Note: Likes/counts hidden to remove social bias.</em><br>Growth verified over 3 months · 0% cheat
+                risk</p>
+            <div class="btn-group">
+                <button class="btn" onclick="alert('Invitation sent!')">Send Interview Invitation</button>
+            </div>
+            <button class="back-btn" onclick="nav('company_home')">← Back</button>
+        </div>
+
+        <!-- PUBLIC PROFILE -->
+        <div id="public_profile" class="screen">
+            <h2>🌍 /u/alex (Public)</h2>
+            <div
+                style="background:linear-gradient(135deg,#1e1b4b,#0f172a); border:2px solid #6366f1; border-radius:12px; padding:24px; margin-bottom:16px; text-align:center;">
+                <div style="font-size:28px; font-weight:bold;">ELITE MIND</div>
+                <div style="color:#a5b4fc;">Top 15% Globally</div>
+                <div style="margin-top:8px;"><span class="badge green">✅ Verified</span> <span class="badge purple">🏆
+                        High Achiever</span></div>
+            </div>
+            <button class="btn" onclick="nav('landing')">Claim Your Own Rank →</button>
+        </div>
+
+    </div>
+    <script>
+        function nav(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const el = document.getElementById(id);
+            if (el) el.classList.add('active');
+            else alert('Screen not in blueprint: ' + id);
+        }
+    </script>
+</body>
+
+</html>

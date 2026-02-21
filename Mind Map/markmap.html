@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Senses — Full System Architecture</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    svg#mindmap {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    svg text {
+      fill: #ffffff !important;
+    }
+
+    .markmap-foreign,
+    .markmap-foreign div,
+    .markmap-foreign span {
+      color: #ffffff !important;
+      font-weight: 500;
+    }
+
+    a {
+      color: #818cf8 !important;
+    }
+
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      color: #888;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      transition: opacity 0.5s;
+      font-family: monospace;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.15.4/dist/style.css">
+</head>
+
+<body>
+  <div id="loading">Building System Map...</div>
+  <svg id="mindmap"></svg>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.15.4/dist/index.js"></script>
+  <script>
+    const data = {
+      "content": "🧠 The Senses System",
+      "children": [
+        {
+          "content": "1. Auth & Identity",
+          "children": [
+            { "content": "Email/Password + JWT" },
+            { "content": "SSO: Google / GitHub / Microsoft" },
+            { "content": "RBAC: User / Company / Admin" },
+            { "content": "Password Reset" },
+            { "content": "Idempotency Guard" }
+          ]
+        },
+        {
+          "content": "2. User Profile",
+          "children": [
+            { "content": "Bio, Skills, Profession" },
+            { "content": "Video Intro (30s)" },
+            { "content": "Privacy Controls" },
+            { "content": "Hiring Visibility Toggle" },
+            { "content": "Trust Badge & Tier Badge" },
+            { "content": "Public URL: senses.ai/@username" }
+          ]
+        },
+        {
+          "content": "3. Assessment Engine",
+          "children": [
+            { "content": "Session Init & Calibration" },
+            { "content": "Cache → DB → AI Question Gen" },
+            { "content": "Anti-Cheat Hooks (Tab/Gaze)" },
+            { "content": "Timing & Reasoning Capture" },
+            { "content": "Adaptive Difficulty" }
+          ]
+        },
+        {
+          "content": "4. Anti-Cheat & Integrity",
+          "children": [
+            { "content": "Vision Agent (Gaze Tracking)" },
+            { "content": "Tab Switch / Focus Loss" },
+            { "content": "Device Fingerprint" },
+            { "content": "IntegrityEvent Logging" },
+            { "content": "Risk Score (Non-Binary)" },
+            { "content": "Telemetry WebSocket" }
+          ]
+        },
+        {
+          "content": "5. Scoring & Ranking",
+          "children": [
+            { "content": "Signal Score (Accuracy × Speed × Difficulty)" },
+            { "content": "Integrity Modifier" },
+            { "content": "Elo Rating (Duels)" },
+            { "content": "Global Rank & Percentile" },
+            { "content": "Tier System (Elite / High / Mid / Low)" },
+            { "content": "Leaderboard (Global / Team / Company)" }
+          ]
+        },
+        {
+          "content": "6. ⚔️ AI Battle / Duels",
+          "children": [
+            { "content": "Elo Matchmaking" },
+            { "content": "AI Bot Opponents" },
+            { "content": "Real-time Scoring" },
+            { "content": "Pressure Behavior Capture" },
+            { "content": "Win/Loss → Rank Update" }
+          ]
+        },
+        {
+          "content": "7. Social Layer",
+          "children": [
+            { "content": "Posts (text, categories, tags)" },
+            { "content": "Thinking Bubbles (Tree Discussions)" },
+            { "content": "Sharing with Quote" },
+            { "content": "Like / Save / Impression" },
+            { "content": "Trending Algorithm" },
+            { "content": "Global Feed (paginated)" },
+            { "content": "⚠️ Comments UI (Pending)" },
+            { "content": "⚠️ Media Upload (Pending)" }
+          ]
+        },
+        {
+          "content": "8. Messaging & Chat",
+          "children": [
+            { "content": "Direct Messages (Conversations)" },
+            { "content": "Group Chat Rooms" },
+            { "content": "Read Receipts" },
+            { "content": "Real-time via WebSocket" }
+          ]
+        },
+        {
+          "content": "9. Notifications",
+          "children": [
+            { "content": "In-App Bell" },
+            { "content": "Rank Updates" },
+            { "content": "Social Interactions" },
+            { "content": "Duel Challenges/Results" },
+            { "content": "Push (Expo/FCM) — Partial" }
+          ]
+        },
+        {
+          "content": "10. Teams & Orgs",
+          "children": [
+            { "content": "Team Creation & Invites" },
+            { "content": "Team Leaderboard" },
+            { "content": "Organization (Multi-Company)" },
+            { "content": "SSO Domain Binding" },
+            { "content": "Role Hierarchy" }
+          ]
+        },
+        {
+          "content": "11. Company / Recruiter",
+          "children": [
+            { "content": "Company Profile & Cognitive Index" },
+            { "content": "Talent Search (Rank/Profession Filter)" },
+            { "content": "Candidate Deep Profile" },
+            { "content": "Invitation Management" },
+            { "content": "Employee Analytics & Heatmap" },
+            { "content": "Company Reputation Score" }
+          ]
+        },
+        {
+          "content": "12. Payments (Stripe)",
+          "children": [
+            { "content": "Checkout Session" },
+            { "content": "Webhook Handler" },
+            { "content": "Membership Tiers on User" },
+            { "content": "Certified Reports" },
+            { "content": "Premium Feature Unlocks" }
+          ]
+        },
+        {
+          "content": "13. Virality & Sharing",
+          "children": [
+            { "content": "Share Card (OG Image)" },
+            { "content": "Share Slug: result-{sessionId}" },
+            { "content": "Twitter/X Intent" },
+            { "content": "Image Download" },
+            { "content": "Flex Tier Branding" }
+          ]
+        },
+        {
+          "content": "14. 📱 Mobile App (Expo)",
+          "children": [
+            { "content": "Mobile Auth Flow" },
+            { "content": "Shared @thesenses/core Package" },
+            { "content": "Camera Permissions (Proctoring)" },
+            { "content": "Optimized Timers" },
+            { "content": "⚠️ Push Notification Config (Pending)" },
+            { "content": "⚠️ Full Test UI Parity (In Progress)" }
+          ]
+        },
+        {
+          "content": "15. AI Agents (13 Modules)",
+          "children": [
+            { "content": "audio → Audio Analysis" },
+            { "content": "vision → Computer Vision (Proctoring)" },
+            { "content": "detection → Cheat Detection ML" },
+            { "content": "llm → GPT/Gemini Routing" },
+            { "content": "questions → AI Question Gen" },
+            { "content": "ranking → Rank Engine" },
+            { "content": "duels → Duel Matchmaking" },
+            { "content": "profile → Profile Scoring" },
+            { "content": "profile-intelligence → Search + Recommendations" },
+            { "content": "trust → Integrity Aggregation" },
+            { "content": "virality → Share Card Gen" },
+            { "content": "insights → Behavioral Analysis" },
+            { "content": "company → Company Intelligence" }
+          ]
+        },
+        {
+          "content": "16. Game & Challenges",
+          "children": [
+            { "content": "Game Sessions" },
+            { "content": "Weekly Challenges" },
+            { "content": "XP & Streak Tracking" }
+          ]
+        }
+      ]
+    };
+
+    window.onload = function () {
+      try {
+        const { markmap } = window;
+        const { Markmap, Toolbar } = markmap;
+        const mm = Markmap.create('#mindmap', { autoFit: true, fitRatio: 0.95, duration: 500, color: () => '#818cf8' }, data);
+        const toolbar = new Toolbar();
+        toolbar.attach(mm);
+        const el = toolbar.render();
+        Object.assign(el.style, { position: 'absolute', bottom: '20px', right: '20px' });
+        document.body.append(el);
+        const style = document.createElement('style');
+        style.innerHTML = `.markmap-node > text { fill: #ffffff !important; } .markmap-foreign { color: #ffffff !important; }`;
+        document.head.appendChild(style);
+        document.getElementById('loading').style.opacity = '0';
+        setTimeout(() => document.getElementById('loading').remove(), 500);
+      } catch (e) {
+        document.getElementById('loading').innerHTML = `<span style='color:red'>Error: ${e.message}</span>`;
+      }
+    };
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Senses - Enhanced AI Ranking Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 1024px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .card h2 { 
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .result {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .result.show { display: block; }
+        
+        .result h3 { 
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .badge-display {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .badge-emoji {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        .badge-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .trust-indicator {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .trust-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .trust-label {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .ranking-message {
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .rank-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 2px solid #f0f0f0;
+        }
+
+        .rank-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .rank-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .rank-label {
+            font-size: 0.85em;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .rank-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .share-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .share-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: transform 0.2s;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .share-twitter {
+            background: #1DA1F2;
+            color: white;
+        }
+
+        .share-linkedin {
+            background: #0077B5;
+            color: white;
+        }
+
+        .share-copy {
+            background: #34495e;
+            color: white;
+        }
+
+        .preview-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+            text-align: center;
+        }
+
+        .preview-section h4 {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .rank-card-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .preview-badge {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .preview-score {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .preview-rank {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            display: none;
+            padding: 20px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            display: none;
+            padding: 15px;
+            background: #fee;
+            border-left: 4px solid #e74c3c;
+            border-radius: 6px;
+            color: #e74c3c;
+            margin-top: 15px;
+        }
+
+        .error.show { display: block; }
+
+        .quick-test {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quick-btn {
+            padding: 10px;
+            font-size: 0.85em;
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 The Senses - Enhanced Ranking System</h1>
+            <p>AI Intelligence Challenge with Trust Scores & Shareable Cards</p>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>Test Configuration</h2>
+                <form id="testForm">
+                    <div class="form-group">
+                        <label for="userName">Your Name:</label>
+                        <input type="text" id="userName" value="User" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userId">User ID:</label>
+                        <input type="text" id="userId" value="user-" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="q1">Q1 Answer (0-10):</label>
+                        <input type="number" id="q1" min="0" max="10" value="8" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="q2">Q2 Answer (0-10):</label>
+                        <input type="number" id="q2" min="0" max="10" value="7" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="q3">Q3 Answer (0-10):</label>
+                        <input type="number" id="q3" min="0" max="10" value="9" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jobProfile">Job Profile:</label>
+                        <select id="jobProfile" required>
+                            <option value="developer">👨‍💻 Developer</option>
+                            <option value="designer">🎨 Designer</option>
+                            <option value="marketer">📊 Marketer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty" required>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard" selected>Hard</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit">🚀 Evaluate & Get Rank Card</button>
+                </form>
+
+                <div class="quick-test">
+                    <button class="quick-btn" onclick="setPreset(9,9,10,'developer','hard')">Pro Dev</button>
+                    <button class="quick-btn" onclick="setPreset(7,8,6,'designer','medium')">Designer</button>
+                    <button class="quick-btn" onclick="setPreset(5,6,5,'marketer','easy')">Marketer</button>
+                    <button class="quick-btn" onclick="setPreset(8,7,7,'developer','medium')">Mid Dev</button>
+                </div>
+
+                <div id="error" class="error"></div>
+            </div>
+            
+            <div class="card">
+                <h2>Results & Rank Card</h2>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 10px;">Evaluating and generating rank card...</p>
+                </div>
+                
+                <div class="result" id="result">
+                    <h3>✅ Evaluation Complete</h3>
+
+                    <div class="ranking-message" id="rankingMessage"></div>
+
+                    <div class="badge-display">
+                        <div class="badge-emoji" id="badgeEmoji">⭐</div>
+                        <div class="badge-name" id="badgeName">Loading...</div>
+                        <div class="trust-indicator">
+                            <div class="trust-fill" id="trustFill" style="width: 75%"></div>
+                        </div>
+                        <div class="trust-label">Trust Score: <span id="trustScore">75</span>%</div>
+                    </div>
+
+                    <div class="rank-card">
+                        <div class="rank-grid">
+                            <div class="rank-item">
+                                <div class="rank-label">Score</div>
+                                <div class="rank-value" id="scoreDisplay">-</div>
+                            </div>
+                            <div class="rank-item">
+                                <div class="rank-label">Normalized</div>
+                                <div class="rank-value" id="normalizedDisplay">-</div>
+                            </div>
+                            <div class="rank-item">
+                                <div class="rank-label">Global Rank</div>
+                                <div class="rank-value" id="globalRankDisplay">-</div>
+                            </div>
+                            <div class="rank-item">
+                                <div class="rank-label">Percentile</div>
+                                <div class="rank-value" id="percentileDisplay">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="share-buttons">
+                        <button class="share-btn share-twitter" onclick="shareTwitter()">
+                            𝕏 Share
+                        </button>
+                        <button class="share-btn share-linkedin" onclick="shareLinkedIn()">
+                            in Share
+                        </button>
+                        <button class="share-btn share-copy" onclick="copyShareLink()">
+                            📋 Copy
+                        </button>
+                    </div>
+
+                    <div class="preview-section">
+                        <h4>📸 Shareable Rank Card Preview</h4>
+                        <div class="rank-card-preview">
+                            <div class="preview-badge" id="previewBadge">⭐</div>
+                            <div class="preview-score" id="previewScore">85/100</div>
+                            <div class="preview-rank">
+                                Top <span id="previewPercentile">50</span>% | 
+                                <span id="previewProfile">Developer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentResult = null;
+
+        function setPreset(q1, q2, q3, profile, difficulty) {
+            document.getElementById('q1').value = q1;
+            document.getElementById('q2').value = q2;
+            document.getElementById('q3').value = q3;
+            document.getElementById('jobProfile').value = profile;
+            document.getElementById('difficulty').value = difficulty;
+            document.getElementById('testForm').dispatchEvent(new Event('submit'));
+        }
+
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            
+            loading.style.display = 'block';
+            result.classList.remove('show');
+            errorDiv.classList.remove('show');
+            
+            try {
+                const payload = {
+                    userId: document.getElementById('userId').value,
+                    answers: {
+                        q1: parseInt(document.getElementById('q1').value),
+                        q2: parseInt(document.getElementById('q2').value),
+                        q3: parseInt(document.getElementById('q3').value)
+                    },
+                    jobProfile: document.getElementById('jobProfile').value,
+                    difficulty: document.getElementById('difficulty').value
+                };
+                
+                console.log('📤 Sending:', payload);
+                
+                const response = await fetch('http://localhost:5000/api/intelligence/evaluate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ Response:', data);
+                
+                loading.style.display = 'none';
+                
+                if (data.success && data.result) {
+                    currentResult = data.result;
+                    displayResults(data.result);
+                    result.classList.add('show');
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('❌ Error:', error);
+                loading.style.display = 'none';
+                errorDiv.textContent = '❌ ' + error.message;
+                errorDiv.classList.add('show');
+            }
+        });
+
+        function displayResults(result) {
+            const ranking = result.ranking || {};
+            const badge = ranking.badge || { emoji: '⭐', name: 'Star' };
+
+            // Update badge display
+            document.getElementById('badgeEmoji').textContent = badge.emoji;
+            document.getElementById('badgeName').textContent = badge.name;
+            document.getElementById('rankingMessage').textContent = ranking.message || '🎉 Great job!';
+            
+            // Update trust score
+            const trustScore = ranking.trustScore || 75;
+            document.getElementById('trustScore').textContent = trustScore;
+            document.getElementById('trustFill').style.width = trustScore + '%';
+            
+            // Update rank data
+            document.getElementById('scoreDisplay').textContent = result.score || '?';
+            document.getElementById('normalizedDisplay').textContent = Math.round(ranking.normalizedScore || 0);
+            document.getElementById('globalRankDisplay').textContent = '#' + (ranking.globalRank || 1);
+            document.getElementById('percentileDisplay').textContent = (ranking.percentile || 50) + '%';
+            
+            // Update preview
+            document.getElementById('previewBadge').textContent = badge.emoji;
+            document.getElementById('previewScore').textContent = (result.score || 85) + '/100';
+            document.getElementById('previewPercentile').textContent = (ranking.percentile || 50);
+            document.getElementById('previewProfile').textContent = result.ranking?.jobProfile || 'User';
+        }
+
+        function shareTwitter() {
+            if (!currentResult) return;
+            const ranking = currentResult.ranking;
+            const text = ranking.message.replace(/[✨🚀⭐👍💪🌱]/g, '').trim();
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text + ' #TheSenses #AI')}`;
+            window.open(url, '_blank');
+        }
+
+        function shareLinkedIn() {
+            if (!currentResult) return;
+            const ranking = currentResult.ranking;
+            const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+        }
+
+        function copyShareLink() {
+            if (!currentResult) return;
+            const ranking = currentResult.ranking;
+            const text = `I scored ${currentResult.score}/100 on The Senses AI Challenge! Top ${100 - ranking.percentile}% globally. ${ranking.message}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

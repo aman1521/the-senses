@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "The Senses API",
+    "dateExported": "2024-05-20T12:00:00.000Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "req_profile_ai",
+            "colId": "col_senses_main",
+            "containerId": "",
+            "name": "Get Profile Intelligence",
+            "url": "http://localhost:5000/api/intelligence/profile",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-05-20T12:00:00.000Z",
+            "modified": "2024-05-20T12:00:00.000Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Sam Altman\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

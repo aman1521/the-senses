@@ -1,0 +1,27 @@
+{
+    "name": "@thesenses/core",
+    "version": "1.0.0",
+    "description": "Shared business logic and models for The Senses platform",
+  "main": "src/index.cjs",
+  "module": "src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./src/index.cjs"
+    }
+  },
+    "types": "src/index.d.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "core",
+        "shared",
+        "thesenses"
+    ],
+    "author": "The Senses Team",
+    "license": "ISC",
+    "dependencies": {
+        "zod": "^4.3.6"
+    }
+}

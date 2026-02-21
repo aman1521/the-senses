@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    background-color: black;
+    color: white;
+}
+
+.result {
+  max-width: 900px;
+  margin: auto;
+  padding: 60px 20px;
+}
+
+.rank-hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.tier {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #00ffd5;
+  color: #000;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.profile-card {
+  background: rgba(255,255,255,0.05);
+  padding: 40px;
+  border-radius: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.actions {
+  margin-top: 50px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+.share {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-card {
+  background: rgba(255,255,255,0.06);
+  padding: 50px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 520px;
+}
+
+.share-card h1 {
+  font-size: 2.2rem;
+  margin: 20px 0;
+}
+
+.style {
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+.proof {
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 12px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.rank {
+  max-width: 900px;
+  margin: auto;
+  padding: 60px 20px;
+}
+
+.rank-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.05);
+  padding: 18px 24px;
+  border-radius: 12px;
+}
+
+.position {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.identity {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.identity .tier {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 4px 10px;
+  background: #00ffd5;
+  color: #000;
+  border-radius: 14px;
+  font-size: 0.75rem;
+}
+
+.meta {
+  text-align: right;
+  opacity: 0.8;
+}
+
+.field {
+  display: block;
+  font-size: 0.8rem;
+}

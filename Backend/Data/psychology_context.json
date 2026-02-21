@@ -1,0 +1,77 @@
+[
+    {
+        "topic": "Big Five Personality Traits (OCEAN)",
+        "content": "The Big Five personality traits are: Openness (creativity, imagination), Conscientiousness (organization, dependability), Extraversion (sociability, assertiveness), Agreeableness (compassion, cooperation), and Neuroticism (emotional stability). These traits form the foundation of modern personality psychology and are used across various assessment tools.",
+        "type": "theory"
+    },
+    {
+        "topic": "Cognitive Dissonance",
+        "content": "Cognitive dissonance occurs when a person holds two or more contradictory beliefs, ideas, or values, causing psychological discomfort. People are motivated to reduce this discomfort by changing their beliefs, justifying their behavior, or ignoring contradictory information. First proposed by Leon Festinger in 1957.",
+        "type": "theory"
+    },
+    {
+        "topic": "Emotional Intelligence (EQ)",
+        "content": "Emotional Intelligence is the ability to perceive, use, understand, and manage emotions. Daniel Goleman identified five key components: self-awareness, self-regulation, motivation, empathy, and social skills. High EQ correlates with better leadership, teamwork, and decision-making.",
+        "type": "theory"
+    },
+    {
+        "topic": "Micro-expressions and Body Language",
+        "content": "Micro-expressions are brief, involuntary facial expressions that reveal true emotions, even when someone tries to conceal them. Paul Ekman's research identified seven universal emotions: happiness, sadness, anger, fear, disgust, surprise, and contempt. Body language cues include posture, eye contact, gestures, and proximity.",
+        "type": "theory"
+    },
+    {
+        "topic": "Stanford Prison Experiment (Zimbardo, 1971)",
+        "content": "This famous case study demonstrated how situational factors can influence behavior. College students assigned to play 'guards' and 'prisoners' quickly adopted abusive and submissive roles respectively. The experiment was halted after 6 days due to extreme psychological stress. Key lesson: Authority and roles can override personal morality.",
+        "type": "case_study"
+    },
+    {
+        "topic": "Milgram Obedience Experiment",
+        "content": "Stanley Milgram's 1961 experiment showed that ordinary people would administer what they believed to be fatal electric shocks to others when instructed by an authority figure. About 65% of participants delivered the maximum 450-volt shock. Demonstrates the power of authority and situational pressures on ethical decision-making.",
+        "type": "case_study"
+    },
+    {
+        "topic": "Growth Mindset vs. Fixed Mindset",
+        "content": "Carol Dweck's research distinguishes between fixed mindset (believing abilities are static) and growth mindset (believing abilities can be developed through effort). People with growth mindsets are more resilient, embrace challenges, and view failure as learning opportunities. This concept is widely applied in education and professional development.",
+        "type": "theory"
+    },
+    {
+        "topic": "Maslow's Hierarchy of Needs",
+        "content": "Abraham Maslow proposed that human motivations follow a hierarchy: physiological needs, safety, love/belonging, esteem, and self-actualization. Lower needs must be satisfied before higher ones become motivating. Critiqued for cultural bias but remains influential in understanding motivation and human behavior.",
+        "type": "theory"
+    },
+    {
+        "topic": "Confirmation Bias",
+        "content": "The tendency to search for, interpret, and recall information that confirms one's preexisting beliefs while giving disproportionately less consideration to alternative possibilities. This bias affects decision-making in business, science, and daily life. Mitigation strategies include actively seeking disconfirming evidence and diverse perspectives.",
+        "type": "theory"
+    },
+    {
+        "topic": "The Dunning-Kruger Effect",
+        "content": "A cognitive bias where people with low ability at a task overestimate their competence, while experts tend to underestimate theirs. The incompetent lack the metacognitive skills to recognize their incompetence. This explains why novices are often overconfident while experts express more uncertainty.",
+        "type": "theory"
+    },
+    {
+        "topic": "Active Listening and Empathy",
+        "content": "Active listening involves fully concentrating, understanding, responding, and remembering what the other person says. Key techniques include: maintaining eye contact, avoiding interruptions, paraphrasing to confirm understanding, asking open-ended questions, and showing empathy. Critical for effective communication and relationship building.",
+        "type": "theory"
+    },
+    {
+        "topic": "Groupthink",
+        "content": "Irving Janis identified groupthink as a psychological phenomenon where the desire for harmony in a group leads to irrational or dysfunctional decision-making. Members suppress dissenting viewpoints and fail to critically analyze alternatives. Historical examples include the Bay of Pigs invasion and Challenger disaster.",
+        "type": "case_study"
+    },
+    {
+        "topic": "Implicit Bias and Unconscious Stereotypes",
+        "content": "Implicit biases are unconscious attitudes or stereotypes that affect our understanding, actions, and decisions. The Implicit Association Test (IAT) measures these biases. They can influence hiring, medical treatment, law enforcement, and everyday interactions, often contradicting explicit beliefs about fairness and equality.",
+        "type": "theory"
+    },
+    {
+        "topic": "Stress and the Fight-or-Flight Response",
+        "content": "Walter Cannon described the fight-or-flight response as the body's automatic physiological reaction to perceived threats. Hans Selye later developed the General Adaptation Syndrome (GAS) model: alarm, resistance, exhaustion. Chronic stress leads to health problems including cardiovascular disease, weakened immunity, and mental health issues.",
+        "type": "theory"
+    },
+    {
+        "topic": "The Halo Effect",
+        "content": "A cognitive bias where an impression in one area influences opinion in other areas. For example, attractive people are often perceived as more intelligent or competent (beauty halo). This affects hiring decisions, performance evaluations, and brand perceptions. Awareness helps mitigate its influence on decision-making.",
+        "type": "theory"
+    }
+]

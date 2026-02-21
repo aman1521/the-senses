@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trust Score Test - What It Really Means</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .concept-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .concept-box h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .concept-box p {
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .what-it-is {
+            background: #f0f4ff;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .what-it-is strong {
+            color: #667eea;
+        }
+
+        .test-scenarios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .scenario-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .scenario-card .description {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .scenario-card button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .scenario-card button:hover {
+            background: #764ba2;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .result-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .trust-bar {
+            background: #eee;
+            height: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .trust-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: width 0.3s;
+        }
+
+        .badge-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .badge-emoji {
+            font-size: 2.5em;
+        }
+
+        .badge-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .badge-info p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .explanation-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .explanation-box h5 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .explanation-box p {
+            color: #333;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .formula-box {
+            background: #f0f4ff;
+            border: 1px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+
+        .comparison-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .is-label {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin: 3px;
+        }
+
+        .is-yes {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .is-no {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .chart-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chart-label {
+            width: 150px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .chart-bar {
+            flex: 1;
+            height: 30px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        .chart-value {
+            width: 60px;
+            text-align: right;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 What Trust Score REALLY Measures</h1>
+            <p>Credibility & Confidence, NOT Intelligence</p>
+        </div>
+
+        <div class="concept-box">
+            <h2>The Core Concept</h2>
+            <div class="what-it-is">
+                <strong>Trust Score answers ONE question:</strong><br>
+                "How confident are we that this score is <em>genuine</em>?"
+            </div>
+            <p><strong>It is NOT:</strong></p>
+            <ul style="margin-left: 20px; color: #666; line-height: 2;">
+                <li>❌ A measure of intelligence</li>
+                <li>❌ A measure of smartness</li>
+                <li>❌ A measure of actual ability</li>
+                <li>❌ Subject to interpretation</li>
+            </ul>
+            <p style="margin-top: 20px;"><strong>It IS:</strong></p>
+            <ul style="margin-left: 20px; color: #667eea; line-height: 2; font-weight: bold;">
+                <li>✅ A measure of credibility</li>
+                <li>✅ A measure of authenticity</li>
+                <li>✅ A measure of confidence in the score</li>
+                <li>✅ A measure of whether the score is real vs lucky</li>
+            </ul>
+        </div>
+
+        <div class="concept-box">
+            <h2>The Formula</h2>
+            <div class="formula-box">
+                <strong>Trust Score = (Score Confidence + Percentile Confidence) / 2</strong>
+                <br><br>
+                Where:<br>
+                • <strong>Score Confidence</strong> = min(normalizedScore, 100)<br>
+                &nbsp;&nbsp;= How much the raw score itself is trustworthy<br>
+                <br>
+                • <strong>Percentile Confidence</strong> = percentile ≥ 50 ? 100 : (percentile × 2)<br>
+                &nbsp;&nbsp;= How much the ranking position is trustworthy<br>
+                <br>
+                Result: <strong>0-100% confidence level</strong>
+            </div>
+        </div>
+
+        <div class="concept-box">
+            <h2>Why It Matters</h2>
+            <p>Two users can have the SAME score (say 80/100), but DIFFERENT trust levels:</p>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Score</th>
+                        <th>Percentile</th>
+                        <th>Trust Score</th>
+                        <th>Why Different?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Scenario A</strong></td>
+                        <td>80/100</td>
+                        <td>95% (Top 5%)</td>
+                        <td><span class="is-label is-yes">96%</span></td>
+                        <td>Score is consistent with high ranking = CREDIBLE</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scenario B</strong></td>
+                        <td>80/100</td>
+                        <td>20% (Bottom 80%)</td>
+                        <td><span class="is-label is-no">50%</span></td>
+                        <td>Score doesn't match ranking = ANOMALY</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scenario C</strong></td>
+                        <td>80/100</td>
+                        <td>1% (Bottom 99%)</td>
+                        <td><span class="is-label is-no">41%</span></td>
+                        <td>Score way too high for ranking = SUSPICIOUS</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 style="color: white; margin-top: 40px; margin-bottom: 20px;">Test Scenarios</h2>
+        <div class="test-scenarios">
+            <div class="scenario-card">
+                <h3>🏆 High Score, High Rank</h3>
+                <div class="description">
+                    Score: 92/100<br>
+                    Percentile: 98%<br>
+                    <strong>Expectation:</strong> Very high trust
+                </div>
+                <button onclick="testScenario('high-high')">Test This →</button>
+            </div>
+
+            <div class="scenario-card">
+                <h3>🤔 High Score, Low Rank</h3>
+                <div class="description">
+                    Score: 92/100<br>
+                    Percentile: 15%<br>
+                    <strong>Expectation:</strong> Low trust (anomaly)
+                </div>
+                <button onclick="testScenario('high-low')">Test This →</button>
+            </div>
+
+            <div class="scenario-card">
+                <h3>⚡ Low Score, High Rank</h3>
+                <div class="description">
+                    Score: 25/100<br>
+                    Percentile: 75%<br>
+                    <strong>Expectation:</strong> Low trust (impossible)
+                </div>
+                <button onclick="testScenario('low-high')">Test This →</button>
+            </div>
+
+            <div class="scenario-card">
+                <h3>✓ Low Score, Low Rank</h3>
+                <div class="description">
+                    Score: 25/100<br>
+                    Percentile: 5%<br>
+                    <strong>Expectation:</strong> High trust (consistent)
+                </div>
+                <button onclick="testScenario('low-low')">Test This →</button>
+            </div>
+
+            <div class="scenario-card">
+                <h3>🎯 Average Score, Average Rank</h3>
+                <div class="description">
+                    Score: 65/100<br>
+                    Percentile: 50%<br>
+                    <strong>Expectation:</strong> Medium trust (normal)
+                </div>
+                <button onclick="testScenario('mid-mid')">Test This →</button>
+            </div>
+
+            <div class="scenario-card">
+                <h3>🚀 Developer, Hard Mode</h3>
+                <div class="description">
+                    Score: 78/100<br>
+                    Difficulty: Hard<br>
+                    <strong>Expectation:</strong> Weighted for authenticity
+                </div>
+                <button onclick="testScenario('dev-hard')">Test This →</button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <h2>Test Results</h2>
+            <div id="resultsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const scenarios = {
+            'high-high': {
+                name: '🏆 High Score + High Rank = TRUSTED',
+                description: 'Performance is consistent and credible',
+                userId: 'user-high-high',
+                country: 'US',
+                finalScore: 92,
+                difficulty: 'hard',
+                jobProfile: 'developer',
+            },
+            'high-low': {
+                name: '🤔 High Score + Low Rank = SUSPICIOUS',
+                description: 'Score doesn\'t match ranking (anomaly)',
+                userId: 'user-high-low',
+                country: 'US',
+                finalScore: 92,
+                difficulty: 'easy',
+                jobProfile: 'marketer',
+            },
+            'low-high': {
+                name: '⚡ Low Score + High Rank = IMPOSSIBLE',
+                description: 'Contradictory signals (very low trust)',
+                userId: 'user-low-high',
+                country: 'US',
+                finalScore: 25,
+                difficulty: 'hard',
+                jobProfile: 'developer',
+            },
+            'low-low': {
+                name: '✓ Low Score + Low Rank = CONSISTENT',
+                description: 'Performance matches ranking (credible)',
+                userId: 'user-low-low',
+                country: 'US',
+                finalScore: 25,
+                difficulty: 'easy',
+                jobProfile: 'marketer',
+            },
+            'mid-mid': {
+                name: '🎯 Average Score + Average Rank = NORMAL',
+                description: 'Standard performance profile',
+                userId: 'user-mid-mid',
+                country: 'US',
+                finalScore: 65,
+                difficulty: 'medium',
+                jobProfile: 'designer',
+            },
+            'dev-hard': {
+                name: '🚀 Developer on Hard Mode = WEIGHTED',
+                description: 'Higher difficulty increases trust confidence',
+                userId: 'user-dev-hard',
+                country: 'US',
+                finalScore: 78,
+                difficulty: 'hard',
+                jobProfile: 'developer',
+            },
+        };
+
+        async function testScenario(scenarioKey) {
+            const scenario = scenarios[scenarioKey];
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            resultsContent.innerHTML = '<div class="loading">⏳ Evaluating...</div>';
+            resultsSection.classList.add('active');
+
+            try {
+                const response = await fetch('http://localhost:5000/api/intelligence/evaluate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(scenario),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayResults(scenario, data);
+            } catch (error) {
+                resultsContent.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                resultsSection.classList.add('active');
+            }
+        }
+
+        function displayResults(scenario, data) {
+            const resultsContent = document.getElementById('resultsContent');
+            const ranking = data.ranking || data.rank || {};
+            const badge = ranking.badge || {};
+            const trustScore = ranking.trustScore || ranking.trust_score || 0;
+            const normalizedScore = ranking.normalizedScore || ranking.normalized_score || scenario.finalScore;
+            const percentile = ranking.percentile || 50;
+
+            let html = `
+                <div class="result-item">
+                    <div class="result-label">Scenario: ${scenario.name}</div>
+                    <div class="explanation-box">
+                        <p>${scenario.description}</p>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">📊 Raw Score</div>
+                    <div class="result-value">${scenario.finalScore}/100</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">⚙️ Normalized Score</div>
+                    <div class="result-value">${normalizedScore}</div>
+                    <p style="color: #666; font-size: 0.9em;">Raw score + difficulty weight + profile bonus</p>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">📈 Percentile Rank</div>
+                    <div class="result-value">${percentile}%</div>
+                    <p style="color: #666; font-size: 0.9em;">Where you rank vs all users</p>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">🔍 TRUST SCORE (The Answer)</div>
+                    <div class="result-value" style="color: #764ba2; font-size: 1.5em;">${trustScore}%</div>
+                    <div class="trust-bar">
+                        <div class="trust-fill" style="width: ${trustScore}%">
+                            ${trustScore}% Confident
+                        </div>
+                    </div>
+                    <div class="explanation-box">
+                        <h5>What This Means:</h5>
+                        <p>We are <strong>${trustScore}% confident</strong> that this ${scenario.finalScore} score is genuine and not a lucky guess or anomaly.</p>
+                    </div>
+                </div>
+            `;
+
+            if (badge.emoji) {
+                html += `
+                    <div class="result-item">
+                        <div class="result-label">🎖️ Badge Achievement</div>
+                        <div class="badge-display">
+                            <div class="badge-emoji">${badge.emoji}</div>
+                            <div class="badge-info">
+                                <h4>${badge.name}</h4>
+                                <p>${badge.description || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (ranking.message) {
+                html += `
+                    <div class="result-item">
+                        <div class="result-label">💬 Feedback Message</div>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; color: #333;">
+                            ${ranking.message}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="result-item">
+                    <div class="result-label">🧮 How Trust Score Was Calculated</div>
+                    <div class="formula-box">
+                        <strong>Trust Score = (Score Confidence + Percentile Confidence) / 2</strong>
+                        <br><br>
+                        Score Confidence = min(${normalizedScore}, 100) = <strong>${Math.min(normalizedScore, 100)}</strong>
+                        <br>
+                        Percentile Confidence = ${percentile >= 50 ? '100' : (percentile * 2)} = <strong>${percentile >= 50 ? 100 : (percentile * 2)}</strong>
+                        <br><br>
+                        Result = (${Math.min(normalizedScore, 100)} + ${percentile >= 50 ? 100 : (percentile * 2)}) / 2 = <strong>${trustScore}%</strong>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">🔑 Key Insight</div>
+                    <div class="explanation-box">
+                        <h5>Why This Trust Score?</h5>
+                        <p>${interpretTrustScore(scenario.finalScore, percentile, trustScore)}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('resultsContent').innerHTML = html;
+        }
+
+        function interpretTrustScore(score, percentile, trust) {
+            if (trust >= 90) {
+                return `🎯 <strong>Very High Trust (${trust}%)</strong><br>The score and ranking are perfectly aligned. This is authentic performance - not a lucky guess.`;
+            } else if (trust >= 70) {
+                return `✓ <strong>High Trust (${trust}%)</strong><br>The score and ranking are mostly consistent. Likely genuine performance.`;
+            } else if (trust >= 50) {
+                return `⚠️ <strong>Medium Trust (${trust}%)</strong><br>There's some inconsistency between score and ranking. Could be valid or anomalous.`;
+            } else {
+                return `🚨 <strong>Low Trust (${trust}%)</strong><br>The score and ranking don't align. Either something is unusual or the score is questionable.`;
+            }
+        }
+
+        // Auto-run first scenario on page load
+        setTimeout(() => testScenario('high-high'), 500);
+    </script>
+</body>
+</html>

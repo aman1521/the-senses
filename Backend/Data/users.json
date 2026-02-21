@@ -1,0 +1,16 @@
+[
+    {
+        "_id": "64f1b2c3e4d5f6a7b8c9d0e1",
+        "name": "Mock Thinker",
+        "username": "mockthinker",
+        "email": "mock@example.com",
+        "role": "user",
+        "profileType": "AI Strategist",
+        "profilePicture": "https://api.dicebear.com/7.x/avataaars/svg?seed=mock",
+        "verified": true,
+        "stats": {
+            "percentile": 95
+        },
+        "createdAt": "2023-01-01T00:00:00.000Z"
+    }
+]

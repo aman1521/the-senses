@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Senses — System Sitemap</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .mermaid {
+            width: 100%;
+            max-width: 1600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mermaid">
+        graph TD
+        classDef public fill:#111,stroke:#666,stroke-width:2px,color:#fff
+        classDef user fill:#0f172a,stroke:#6366f1,stroke-width:2px,color:#a5b4fc
+        classDef company fill:#18181b,stroke:#a1a1aa,stroke-width:2px,color:#e4e4e7
+        classDef admin fill:#2e1065,stroke:#d8b4fe,stroke-width:2px,color:#e9d5ff
+        classDef pending fill:#2a1a1a,stroke:#ef4444,stroke-width:2px,color:#fca5a5,stroke-dasharray: 5 5
+        classDef mobile fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#a7f3d0
+        classDef ai fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#c7d2fe
+
+        %% PUBLIC LAYER
+        subgraph Public["🌍 Public Access"]
+        Landing[Landing Page]:::public
+        Login[Login / Register]:::public
+        SSO[SSO — Google/GitHub/MS]:::public
+        Methodology[Methodology Page]:::public
+        PublicProfile[Public Profile /u/:handle]:::public
+        ShareCard[Share Card /share/:slug]:::public
+        end
+        Landing --> Login
+        Login --> SSO
+        Landing --> Methodology
+
+        %% USER DASHBOARD
+        subgraph UserApp["🧑‍💻 User Dashboard"]
+        UserHome[Dashboard Home]:::user
+        Perform[Performance Charts]:::user
+        Timeline[Cognitive Timeline]:::user
+        Bubbles[Discussion Bubbles]:::user
+        Duels[⚔️ AI Battle Arena]:::user
+        Chat[Direct Messages]:::user
+        Settings[Settings & Privacy]:::user
+        Premium[Premium / Payments]:::user
+
+        subgraph Assessment["🧠 Assessment Engine"]
+        AStart[Start Session]:::user
+        ACheck[Pre-Flight Checks]:::user
+        ATest[Adaptive Test]:::user
+        AResult[Result & Analysis]:::user
+        end
+        end
+
+        Login -->|Role: User| UserHome
+        UserHome --> Perform
+        UserHome --> Timeline
+        UserHome --> Bubbles
+        UserHome --> Duels
+        UserHome --> Chat
+        UserHome --> Settings
+        UserHome --> Premium
+        UserHome --> AStart
+        AStart --> ACheck --> ATest --> AResult
+        AResult -->|Rank Update| UserHome
+        AResult --> ShareCard
+        Duels -->|AI Opponent| DuelResult[Duel Result]:::user
+        DuelResult -->|Elo Update| UserHome
+
+        %% SOCIAL
+        subgraph Social["🫧 Social Logic"]
+        Feed[Global Feed]:::user
+        Post[Create Post]:::user
+        BubbleView[Bubble Tree]:::user
+        Trending[Trending Bubbles]:::user
+        Comments[Comments — Pending]:::pending
+        Search[Global Search — Pending]:::pending
+        Media[Media Upload — Pending]:::pending
+        Notify[Push Notifications — Partial]:::pending
+        end
+        UserHome --> Feed
+        Feed --> Post
+        Feed --> BubbleView
+        BubbleView --> Trending
+        Post -.-> Comments
+        UserHome -.-> Search
+        Post -.-> Media
+        UserHome -.-> Notify
+
+        %% TEAMS & ORGS
+        subgraph TeamsOrgs["👥 Teams & Organizations"]
+        Teams[Team Management]:::user
+        TeamInvite[Team Invites]:::user
+        Orgs[Organization]:::company
+        OrgSSO[SSO Domain Binding]:::company
+        end
+        UserHome --> Teams
+        Teams --> TeamInvite
+        UserHome --> Orgs
+        Orgs --> OrgSSO
+
+        %% MOBILE
+        subgraph MobileApp["📱 Mobile App (Expo)"]
+        MobLogin[Mobile Auth]:::mobile
+        MobHome[Mobile Dashboard]:::mobile
+        MobTest[Test Interface]:::mobile
+        MobPush[Push Notifications — Pending]:::pending
+        end
+        Login -.-> MobLogin
+        MobLogin --> MobHome --> MobTest
+        MobHome -.-> MobPush
+
+        %% COMPANY
+        subgraph CompanyApp["🏢 Company / Recruiter"]
+        CompHome[Recruiter Dashboard]:::company
+        Talent[Talent Search]:::company
+        Candidate[Candidate Profile]:::company
+        CompareC[Comparison Tool]:::company
+        Pipeline[Hiring Pipeline]:::company
+        CompanyRep[Company Reputation]:::company
+        end
+        Login -->|Role: Company| CompHome
+        CompHome --> Talent --> Candidate --> CompareC --> Pipeline
+        CompHome --> CompanyRep
+
+        %% AI AGENTS
+        subgraph AIAgents["🤖 AI Agent Layer (13 Modules)"]
+        A1[vision - Proctoring]:::ai
+        A2[detection - Cheat ML]:::ai
+        A3[llm - GPT/Gemini]:::ai
+        A4[questions - Gen]:::ai
+        A5[ranking - Rank Engine]:::ai
+        A6[duels - Matchmaking]:::ai
+        A7[profile - Scoring]:::ai
+        A8[trust - Integrity]:::ai
+        A9[virality - Share Card]:::ai
+        A10[audio - Analysis]:::ai
+        A11[insights - Behavioral]:::ai
+        A12[company - Intelligence]:::ai
+        A13[profile-intelligence - Search]:::ai
+        end
+        ATest --> A1
+        ATest --> A2
+        ATest --> A4
+        AResult --> A5
+        Duels --> A6
+        UserHome --> A7
+        AResult --> A8
+        AResult --> A9
+        Feed --> A11
+        Talent --> A13
+
+        %% ADMIN
+        subgraph AdminApp["🛡️ Admin Control"]
+        AdminDash[System Overview]:::admin
+        Users[User Management]:::admin
+        Content[Content Moderation]:::admin
+        Logs[Anti-Cheat Logs]:::admin
+        Markets[Market Updates]:::admin
+        end
+        Login -->|Role: Admin| AdminDash
+        AdminDash --> Users
+        AdminDash --> Content
+        AdminDash --> Logs
+        AdminDash --> Markets
+    </div>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'dark' });</script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+﻿node : ΓÜá∩╕Å  Running in 
+non-production mode
+At line:1 char:1
++ node test-server.js 2>&1 
+| Out-File -FilePath 
+"./error-log.txt" -Enco ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          
+    : NotSpecified: (ΓÜá∩╕  
+  Å  Running in non-produ   
+ ction mode:String) [],     
+RemoteException
+    + FullyQualifiedErrorId 
+    : NativeCommandError
+ 
+FULL ERROR: D:\The Senses (B
+E+FE)\Backend\models\User.js
+:147
+      type: String, enum: 
+['beginner', '
+                            
+           ^
+
+SyntaxError: Invalid or 
+unexpected token
+    at wrapSafe (node:intern
+al/modules/cjs/loader:1692:1
+8)
+    at Module._compile (node
+:internal/modules/cjs/loader
+:1735:20)
+    at Object..js (node:inte
+rnal/modules/cjs/loader:1893
+:10)
+    at Module.load (node:int
+ernal/modules/cjs/loader:148
+1:32)
+    at Module._load (node:in
+ternal/modules/cjs/loader:13
+00:12)
+    at 
+TracingChannel.traceSync (no
+de:diagnostics_channel:328:1
+4)
+    at wrapModuleLoad (node:
+internal/modules/cjs/loader:
+245:24)
+    at Module.require (node:
+internal/modules/cjs/loader:
+1504:12)
+    at require (node:interna
+l/modules/helpers:152:16)
+    at Object.<anonymous> 
+(D:\The Senses (BE+FE)\Backe
+nd\controllers\authControlle
+r.js:1:14)
+ERROR STACK: D:\The Senses (
+BE+FE)\Backend\models\User.j
+s:147
+      type: String, enum: 
+['beginner', '
+                            
+           ^
+
+SyntaxError: Invalid or 
+unexpected token
+    at wrapSafe (node:intern
+al/modules/cjs/loader:1692:1
+8)
+    at Module._compile (node
+:internal/modules/cjs/loader
+:1735:20)
+    at Object..js (node:inte
+rnal/modules/cjs/loader:1893
+:10)
+    at Module.load (node:int
+ernal/modules/cjs/loader:148
+1:32)
+    at Module._load (node:in
+ternal/modules/cjs/loader:13
+00:12)
+    at 
+TracingChannel.traceSync (no
+de:diagnostics_channel:328:1
+4)
+    at wrapModuleLoad (node:
+internal/modules/cjs/loader:
+245:24)
+    at Module.require (node:
+internal/modules/cjs/loader:
+1504:12)
+    at require (node:interna
+l/modules/helpers:152:16)
+    at Object.<anonymous> 
+(D:\The Senses (BE+FE)\Backe
+nd\controllers\authControlle
+r.js:1:14)

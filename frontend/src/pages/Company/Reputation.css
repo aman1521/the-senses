@@ -1,0 +1,21 @@
+.rep-container {
+    min-height: 100vh;
+    background: #000;
+    color: #fff;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.rep-header {
+    background: radial-gradient(circle at top right, #1a1a20 0%, #09090b 100%);
+}
+
+.panel {
+    transition: transform 0.2s ease;
+}
+
+.panel:hover {
+    transform: translateY(-2px);
+    border-color: #3f3f46;
+}

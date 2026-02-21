@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Senses - AI Agent Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 { color: #333; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        button:active { transform: translateY(0); }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+        .result.show { display: block; }
+        .result h3 { color: #667eea; margin-bottom: 10px; }
+        .result-item {
+            margin: 8px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .result-item:last-child { border-bottom: none; }
+        .label { color: #666; font-weight: 500; }
+        .value { color: #333; font-family: 'Courier New', monospace; }
+        .error { color: #e74c3c; }
+        .success { color: #27ae60; }
+        .loading {
+            text-align: center;
+            display: none;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Senses AI Agent Test</h1>
+        <p class="subtitle">Test the AI Intelligence Agent locally</p>
+        
+        <form id="testForm">
+            <div class="form-group">
+                <label for="q1">Q1 Answer (0-10):</label>
+                <input type="number" id="q1" min="0" max="10" value="8" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="q2">Q2 Answer (0-10):</label>
+                <input type="number" id="q2" min="0" max="10" value="7" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="q3">Q3 Answer (0-10):</label>
+                <input type="number" id="q3" min="0" max="10" value="9" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="jobProfile">Job Profile:</label>
+                <select id="jobProfile" required>
+                    <option value="developer">Developer</option>
+                    <option value="designer">Designer</option>
+                    <option value="marketer">Marketer</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty" required>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard" selected>Hard</option>
+                </select>
+            </div>
+            
+            <button type="submit">Test AI Agent</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px;">Testing AI Agent...</p>
+        </div>
+        
+        <div class="result" id="result">
+            <h3>AI Agent Response</h3>
+            <div class="result-item">
+                <span class="label">Status:</span>
+                <span class="value" id="status"></span>
+            </div>
+            <div class="result-item">
+                <span class="label">Final Score:</span>
+                <span class="value" id="score"></span>
+            </div>
+            <div class="result-item">
+                <span class="label">Normalized Score:</span>
+                <span class="value" id="normalized"></span>
+            </div>
+            <div class="result-item">
+                <span class="label">Timestamp:</span>
+                <span class="value" id="timestamp"></span>
+            </div>
+            <div class="result-item" id="errorContainer" style="display:none;">
+                <span class="label error">Error:</span>
+                <span class="value error" id="error"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const errorContainer = document.getElementById('errorContainer');
+            
+            loading.style.display = 'block';
+            result.classList.remove('show');
+            errorContainer.style.display = 'none';
+            
+            try {
+                const payload = {
+                    answers: {
+                        q1: parseInt(document.getElementById('q1').value),
+                        q2: parseInt(document.getElementById('q2').value),
+                        q3: parseInt(document.getElementById('q3').value)
+                    },
+                    jobProfile: document.getElementById('jobProfile').value,
+                    difficulty: document.getElementById('difficulty').value
+                };
+                
+                console.log('Sending request:', payload);
+                
+                const response = await fetch('http://localhost:5000/api/intelligence/evaluate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Response:', data);
+                
+                loading.style.display = 'none';
+                
+                if (data.success && data.result) {
+                    document.getElementById('status').textContent = 'Success';
+                    document.getElementById('status').className = 'value success';
+                    document.getElementById('score').textContent = data.result.score;
+                    const normalized = data.result.normalized ?? data.result.normalizedScore ?? data.result.normalizedAnswers;
+                    document.getElementById('normalized').textContent = JSON.stringify(normalized);
+                    document.getElementById('timestamp').textContent = new Date(data.result.timestamp).toLocaleString();
+                    result.classList.add('show');
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                loading.style.display = 'none';
+                document.getElementById('status').textContent = 'Failed';
+                document.getElementById('status').className = 'value error';
+                document.getElementById('error').textContent = error.message;
+                errorContainer.style.display = 'block';
+                result.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

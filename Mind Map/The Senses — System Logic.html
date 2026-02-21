@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Senses — System Logic</title>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.15.4"></script>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background: #09090b;
+      height: 100vh;
+      width: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    svg text,
+    .markmap-foreign {
+      color: #ffffff !important;
+      fill: #ffffff !important;
+    }
+
+    #title {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: #818cf8;
+      font-family: monospace;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      z-index: 100;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="title">The Senses — Full System Logic</div>
+  <div class="markmap">
+
+    # 🧠 The Senses
+
+    ## 1. Auth & Identity
+    - Email/Password + JWT (Access + Refresh)
+    - SSO: Google / GitHub / Microsoft
+    - RBAC: User / Company / Admin
+    - Password Reset via Email Token
+    - Idempotency Guard (duplicate-proof)
+    - Rate Limiting per IP
+
+    ## 2. User Profile
+    - Bio, Skills, Profession
+    - Video Intro (30s)
+    - Privacy Controls (public/connections/private)
+    - Hiring Visibility Toggle
+    - Trust Badge & Tier Badge (Elite/High/Mid/Low)
+    - Public URL: senses.ai/@username
+
+    ## 3. Assessment Engine
+    - Session Calibration from History
+    - Question Selection: Cache → DB → AI Gen
+    - Anti-Cheat Pre-Flight (webcam, fullscreen)
+    - Timing + Reasoning Capture
+    - Adaptive Difficulty per Cognitive Profile
+
+    ## 4. Anti-Cheat & Integrity (Vision Agent)
+    - Gaze Direction Tracking (webcam)
+    - Tab Switch / Focus Loss Events
+    - Copy-Paste Detection
+    - Device Fingerprinting
+    - IntegrityEvent Logging (model)
+    - Risk Score (non-binary, weighted signals)
+    - Telemetry WebSocket (real-time)
+
+    ## 5. Scoring & Ranking
+    - Signal Score = Accuracy × Speed × Difficulty
+    - Integrity Modifier (penalty if risk detected)
+    - Global Rank & Percentile
+    - Elo Rating (Duel-specific)
+    - Tier System: Elite / High / Mid / Low
+    - Leaderboard: Global / Team / Company
+
+    ## 6. ⚔️ AI Battle & Duels
+    - Elo-Based Matchmaking
+    - AI Bot Opponents (AIProfile model)
+    - Real-time Parallel Scoring
+    - Pressure Behavior Capture
+    - Duel Outcome → Win/Loss → Elo Update → Rank Recalc
+
+    ## 7. Social Layer
+    - Posts (text, 7 categories, tags, visibility)
+    - Thinking Bubbles (BubbleNode discussion trees)
+    - Share with Quote (linked share record)
+    - Like / Save / Impression tracking
+    - Trending Algorithm (recency decay + engagement weight)
+    - Global Feed (paginated, filter by category/tag)
+    - ⚠️ Comments Threaded UI (Backend: ✅ / Frontend: Pending)
+    - ⚠️ Media Upload (URL only, direct upload pending)
+
+    ## 8. Messaging & Chat
+    - Direct Messages (Conversation + Message models)
+    - Group Chat Rooms (Room model)
+    - Read Receipts
+    - Real-time delivery via WebSocket
+
+    ## 9. Notifications
+    - In-App Bell
+    - Types: Rank, Duel, Social, Invite, Achievement, Market
+    - Push Notifications via Expo (PushToken model)
+    - ⚠️ FCM/APNs full config: Pending
+
+    ## 10. Teams & Organizations
+    - Team Creation & Member Roles
+    - Team Invites (pending/accepted/rejected)
+    - Team Leaderboard
+    - Organization (multi-company, role hierarchy)
+    - SSO Domain Binding per Org
+
+    ## 11. Company / Recruiter
+    - Company Profile (CompanyProfile model)
+    - Cognitive Index (avg employee score)
+    - Talent Search (profession/rank/score filters)
+    - Candidate Deep Profile View
+    - Interview Invitation Management
+    - Employee Analytics & Skill Heatmap
+    - Company Reputation Score (CompanyReputation)
+
+    ## 12. Payments (Stripe)
+    - Stripe Checkout Session
+    - Webhook: payment_intent.succeeded
+    - Membership Tiers on User model
+    - Certified Reports ($19)
+    - Premium Subscription ($9/mo)
+    - Premium Unlocks: Certificate, Analytics, Priority Visibility
+
+    ## 13. Score Sharing & Virality
+    - Share Card (OG image generated per session)
+    - Share Slug: result-{sessionId}
+    - Share URL: {origin}/share/{slug}
+    - Twitter/X Intent pre-filled
+    - Image download button
+    - Flex Tier Branding
+
+    ## 14. 📱 Mobile App (Expo)
+    - Mobile Auth Flow
+    - Shared @thesenses/core monorepo package
+    - React Navigation stack
+    - Camera Permissions (proctoring)
+    - Optimized Timers
+    - ⚠️ Full Test UI Parity (in progress)
+    - ⚠️ Push Notification Config (pending FCM)
+
+    ## 15. AI Agent Layer (13 Modules)
+    - audio → Audio Analysis & MIME Validation
+    - vision → Computer Vision Proctoring (integrityAnalyst.js)
+    - detection → Cheat Detection ML
+    - llm → GPT/Gemini Prompt Routing
+    - questions → AI Question Generation
+    - ranking → Rank Engine (rankEngine.js)
+    - duels → Duel Matchmaking (duelService.js)
+    - profile → Profile Scoring (profileService.js)
+    - profile-intelligence → Search Engine + Recommendations
+    - trust → Integrity Signal Aggregation
+    - virality → Share Card Generator (shareCardGenerator.js)
+    - insights → Behavioral Analysis
+    - company → Company Intelligence & Matching
+
+    ## 16. Game & Challenges
+    - Game Sessions (GameSession model)
+    - Weekly Challenges (WeeklyChallenge model)
+    - XP Tracking
+    - Streak Mechanics
+
+    ## 17. Market Updates
+    - MarketUpdate model
+    - Admin-authored market signal feed
+    - Delivered via Notification system
+
+    ## 18. Adaptive Coaching Engine
+    - Micro-Gap Analysis (pattern failure detection)
+    - Cognitive Load Spike Detection
+    - Weak Domain Identification
+    - Drill Prescription & Difficulty Curve Adjustment
+
+    ## 19. Persistence & Data Flow
+    - MongoDB via Mongoose (38 models)
+    - JWT for stateless auth
+    - WebSocket for real-time (Telemetry, Chat, Duels)
+    - Stripe for payments
+    - Expo Push for mobile notifications
+
+    ## 20. ⚠️ Pending Features
+    - Comments Threaded UI (Frontend)
+    - Global Search UI (backend: search.engine.js exists)
+    - Direct Media Upload (S3/Cloudinary)
+    - Real-time Push Notification Full Config
+    - Mobile App Test Parity
+
+  </div>
+</body>
+
+</html>

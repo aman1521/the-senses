@@ -1,0 +1,11 @@
+[
+  "me",
+  "updateProfile",
+  "myStats",
+  "getTalentPool",
+  "getPublicProfile",
+  "addCertification",
+  "deleteCertification",
+  "getUserActivity",
+  "getUserPosts"
+]
