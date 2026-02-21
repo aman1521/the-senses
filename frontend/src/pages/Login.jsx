@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { API } from "../services/api";
+import { API, resolveApiBaseURL } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { JOB_PROFILES } from "../data/jobProfiles";
 import "./Login.css";
@@ -25,6 +25,7 @@ const Login = () => {
 
     const [error, setError] = useState(null);
     const [passwordStrength, setPasswordStrength] = useState({ score: 0, label: "", color: "" });
+    const apiBaseURL = resolveApiBaseURL();
 
     // Check OAuth availability on mount
     useEffect(() => {
@@ -124,6 +125,12 @@ const Login = () => {
             }
 
         } catch (err) {
+            const isNetworkFailure = err.code === "ERR_NETWORK" || !err.response;
+            if (isNetworkFailure) {
+                setError("Unable to connect to the server. Please try again in a moment.");
+                return;
+            }
+
             const errorMsg =
                 err.response?.data?.message ||
                 err.response?.data?.error ||
@@ -150,12 +157,12 @@ const Login = () => {
 
     // OAuth Handlers
     const handleGoogleLogin = () => {
-        const googleAuthUrl = `${import.meta.env.VITE_API_URL || ""}/api/v1/auth/google`;
+        const googleAuthUrl = `${apiBaseURL}/api/v1/auth/google`;
         window.location.href = googleAuthUrl;
     };
 
     const handleLinkedInLogin = () => {
-        const linkedInAuthUrl = `${import.meta.env.VITE_API_URL || ""}/api/v1/auth/linkedin`;
+        const linkedInAuthUrl = `${apiBaseURL}/api/v1/auth/linkedin`;
         window.location.href = linkedInAuthUrl;
     };
 

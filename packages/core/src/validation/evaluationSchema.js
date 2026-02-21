@@ -1,4 +1,13 @@
-const { z } = require("zod");
+let z;
+
+try {
+    ({ z } = require("zod"));
+} catch (error) {
+    // Support monorepo installs where @thesenses/core is symlinked
+    // and dependencies exist only in the backend workspace.
+    const zodPath = require.resolve("zod", { paths: [process.cwd(), __dirname] });
+    ({ z } = require(zodPath));
+}
 
 const evaluationSchema = z.object({
     userId: z.string().optional(),

@@ -1,11 +1,42 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const normalizeUrl = (value) =>
+  typeof value === "string" ? value.trim().replace(/\/+$/, "") : "";
+
+const isLocalHost = (hostname) =>
+  hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+
+export const resolveApiBaseURL = () => {
+  const configuredUrl = normalizeUrl(
+    import.meta.env.VITE_API_URL ||
+    import.meta.env.VITE_BACKEND_URL ||
+    import.meta.env.VITE_API_BASE
+  );
+
+  if (configuredUrl) {
+    return configuredUrl;
+  }
+
+  if (typeof window !== "undefined" && isLocalHost(window.location.hostname)) {
+    return "http://localhost:5000";
+  }
+
+  return "";
+};
+
+const baseURL = resolveApiBaseURL();
 
 export const API = axios.create({
-  baseURL,
+  ...(baseURL ? { baseURL } : {}),
   withCredentials: true,
+  timeout: 15000,
 });
+
+if (!baseURL && typeof window !== "undefined") {
+  console.warn(
+    "API base URL is not configured. Set VITE_API_URL (or VITE_BACKEND_URL) for production deployments."
+  );
+}
 
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");

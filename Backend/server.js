@@ -41,15 +41,48 @@ const strictLimiter = rateLimit({
 });
 
 // Middleware
-const allowedOrigins = process.env.NODE_ENV === 'production'
-    ? process.env.FRONTEND_URL?.split(',') || ['https://yourdomain.com']
-    : ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173'];
+const parseOrigins = (value) =>
+    (value || "")
+        .split(",")
+        .map((origin) => {
+            const trimmed = origin.trim().replace(/\/+$/, "");
+            if (!trimmed) return "";
+            try {
+                return new URL(trimmed).origin;
+            } catch {
+                return trimmed;
+            }
+        })
+        .filter(Boolean);
+
+const configuredOrigins = [
+    ...parseOrigins(process.env.FRONTEND_URL),
+    ...parseOrigins(process.env.CLIENT_URL),
+    ...parseOrigins(process.env.CORS_ORIGIN),
+];
+
+if (process.env.VERCEL_URL) {
+    configuredOrigins.push(`https://${process.env.VERCEL_URL}`);
+}
+
+const developmentOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173'];
+const allowedOrigins = Array.from(new Set(
+    process.env.NODE_ENV === 'production'
+        ? configuredOrigins
+        : [...developmentOrigins, ...configuredOrigins]
+));
+
+const enforceCorsOriginCheck = process.env.NODE_ENV === 'production' && allowedOrigins.length > 0;
+
+if (process.env.NODE_ENV === 'production' && !enforceCorsOriginCheck) {
+    console.warn("CORS origin allowlist is empty in production. All origins are temporarily allowed.");
+}
 
 app.use(cors({
     origin: function (origin, callback) {
         // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1 && process.env.NODE_ENV === 'production') {
+        if (enforceCorsOriginCheck && allowedOrigins.indexOf(origin) === -1) {
             var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
             return callback(new Error(msg), false);
         }
@@ -154,7 +187,7 @@ const { Server } = require("socket.io");
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: allowedOrigins,
+        origin: enforceCorsOriginCheck ? allowedOrigins : true,
         credentials: true
     }
 });

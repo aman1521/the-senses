@@ -3,7 +3,7 @@ services:
     name: the-senses-backend
     runtime: node
     # Run from REPO ROOT so ../packages/core resolves correctly
-    buildCommand: cd Backend && npm install
+    buildCommand: npm install && cd Backend && npm install
     startCommand: cd Backend && node server.js
     envVars:
       - key: NODE_ENV
@@ -23,5 +23,11 @@ services:
       - key: CLOUDINARY_API_SECRET
         sync: false
       - key: APP_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: CORS_ORIGIN
         sync: false
     healthCheckPath: /api/v1/health

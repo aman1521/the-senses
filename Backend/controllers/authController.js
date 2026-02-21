@@ -111,7 +111,19 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email: email.toLowerCase() }).select('+password').populate("company");
+    const lookup = User.findOne({ email: email.toLowerCase() });
+    let user;
+
+    // Mongoose query path
+    if (lookup && typeof lookup.select === "function") {
+      user = await lookup.select("+password").populate("company");
+    } else {
+      // SimpleDB/mock path
+      user = await lookup;
+      if (user && typeof user.populate === "function") {
+        await user.populate("company");
+      }
+    }
 
     if (!user) {
       return errorResponse(res, "No account found with this email. Please register first.", 400);
@@ -127,9 +139,12 @@ exports.login = async (req, res, next) => {
       return errorResponse(res, "Incorrect password. Please try again.", 400);
     }
 
+    const safeUser = typeof user.toObject === "function" ? user.toObject() : { ...user };
+    delete safeUser.password;
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    return successResponse(res, { token, user }, "Login successful");
+    return successResponse(res, { token, user: safeUser }, "Login successful");
 
   } catch (err) {
     next(err);
