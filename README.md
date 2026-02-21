@@ -1,4 +1,4 @@
-# 🧠 The Senses – Intelligent Assessment & Social Platform
+# 🧠 The Senses – AI-Based Platform for those who want proof of there intelligens!
 
 **The Senses** is a next-generation platform that quantifies cognitive ability and turns thinking into verifiable social proof. It combines rigorous psychometric assessments with a unique "Thinking Bubble" social network.
 
