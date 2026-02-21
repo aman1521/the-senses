@@ -128,6 +128,10 @@ v1Router.use("/push-tokens", require("./routes/pushTokenRoutes")); // Push Notif
 v1Router.use("/user-profiles", require("./routes/userProfileRoutes")); // User Profile System
 v1Router.use("/company-profiles", require("./routes/companyProfileRoutes")); // Company Profile System
 
+// Phase 6: Enterprise Features
+v1Router.use("/analytics", require("./routes/analyticsRoutes")); // Advanced Analytics
+v1Router.use("/developer", require("./routes/developerRoutes")); // Developer API Tokens
+
 // Mount V1 Router
 app.use("/api/v1", v1Router);
 

@@ -46,11 +46,11 @@ These features have partial backend support but lack complete frontend implement
 - [x] Ensure `ReflexTest` works smoothly on touch devices.
 - [x] Fix responsive layout issues in `SocialFeed`.
 
-### Phase 6: Enterprise Features (Future)
+### Phase 6: Enterprise Features (Completed ✅)
 
-- [ ] **Advanced Analytics:** Company dashboard reporting tools.
-- [ ] **Team Management:** Invite flows and role assignment.
-- [ ] **API Access:** Developer tokens for external integration.
+- [x] **Advanced Analytics:** Company dashboard reporting controller (`analyticsController.js`) with score distributions, trends, dimension breakdowns, and integrity summaries. Routes: `/api/v1/analytics/company/:orgId`, `/api/v1/analytics/candidate/:userId`.
+- [x] **Team Management:** Full backend (create, invite, remove, roles) was already in place. Frontend `CompanyDashboard.jsx` wired to `/api/company/team`.
+- [x] **API Access:** Full Developer Portal — `sk_live_` token generation, scoped access, revocation, 1-time reveal modal. Page at `/developer`. Routes: `/api/v1/developer/tokens` (CRUD) and public endpoints (`/me`, `/results`).
 
 ---
 

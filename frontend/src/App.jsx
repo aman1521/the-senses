@@ -25,6 +25,7 @@ import MessagingPage from "./pages/MessagingPage.jsx";
 
 import CompanyReputation from "./pages/Company/CompanyReputation.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
+import DeveloperPortal from "./pages/DeveloperPortal.jsx";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
           <Route path="/ai-battle" element={<AIBattle />} />
           <Route path="/login" element={<Login />} />
           <Route path="/oauth-callback" element={<OAuthCallback />} />
+          <Route path="/developer" element={<DeveloperPortal />} />
         </Routes>
       </div>
     </BrowserRouter>
