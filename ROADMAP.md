@@ -1,28 +1,23 @@
 # 🗺️ The Senses - Project Roadmap & Missing Features
 
 **Last Updated:** February 18, 2026
-**Current Status:** Phase 5 (Optimization & Polish)
+**Current Status:** Phase 6 (Enterprise Features)
 
 ## 🚨 Critical Missing Features (UI/UX)
 
 These features have partial backend support but lack complete frontend implementation or integration.
 
-### 1. 💬 Comment System (High Priority)
+### 1. 💬 Comment System (Completed)
 
-- **Status:** Backend Ready (Models/Controllers) ✅ | Frontend Ready ✅
+- **Status:** Fully Implemented ✅
 - **Missing:**
-  - `CommentSection` component in `SocialFeed`.
-  - Reply UI (threaded or flat).
-  - Real-time updates for new comments.
-  - Integration with `BubbleNode` (for tree-based discussions).
+  - Nothing. Threaded replies, dynamic fetching, and UI integration are complete.
 
-### 2. 🔍 Global Search (High Priority)
+### 2. 🔍 Global Search (Completed)
 
-- **Status:** Backend Ready ✅ | Frontend Ready ✅
+- **Status:** Fully Implemented ✅
 - **Missing:**
-  - `Search.jsx` page.
-  - Backend search endpoints (users, posts, bubbles).
-  - Search bar functionality in Navbar.
+  - Nothing. Search endpoints, Navbar integration, and `Search.jsx` are complete.
 
 ### 3. 🖼️ Media Upload (Completed)
 
@@ -46,10 +41,10 @@ These features have partial backend support but lack complete frontend implement
 - [x] **Fix Media Upload:** Implement basic file upload or improve URL input UX.
 - [x] **Search:** Create basic search page for Users and Posts.
 
-### Phase 5.2: Mobile App Refinement (In Progress)
+### Phase 5.2: Mobile App Refinement (Completed)
 
-- [ ] Ensure `ReflexTest` works smoothly on touch devices.
-- [ ] Fix responsive layout issues in `SocialFeed`.
+- [x] Ensure `ReflexTest` works smoothly on touch devices.
+- [x] Fix responsive layout issues in `SocialFeed`.
 
 ### Phase 6: Enterprise Features (Future)
 

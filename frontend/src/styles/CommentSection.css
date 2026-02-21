@@ -122,3 +122,62 @@
     font-size: 0.7rem;
     color: #1da1f2;
 }
+
+.comment-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.comment-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 4px;
+    padding-left: 12px;
+}
+
+.reply-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.reply-btn:hover {
+    color: #6366f1;
+}
+
+.reply-form {
+    margin-left: 42px;
+    margin-top: 8px;
+}
+
+.reply-form input {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+}
+
+.reply-form button {
+    width: 35px;
+    height: 35px;
+    font-size: 0.85rem;
+}
+
+.comment-replies {
+    margin-left: 42px;
+    padding-left: 15px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
