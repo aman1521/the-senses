@@ -18,13 +18,17 @@
     "name": "Rishita Trivedi",
     "email": "rishitatrivedi@gmail.com",
     "username": "rishitatrivedi",
-    "password": "$2a$12$tO2TD2/o4W/6Ms.0IQuZ7eeM25Ol/iJCqkndYTbjIx2rUHYVx2sB2",
+    "password": "$2a$12$C9gV2rovLtFFLKCRI..TTe0tpgUT4.OCqYd4T76XNXCdPAZaiZq4m",
     "profileType": "content-writer",
     "experienceLevel": "mid",
     "company": null,
     "role": "user",
+    "verified": true,
+    "stats": {
+      "percentile": 68
+    },
     "createdAt": "2026-02-21T14:09:09.109Z",
-    "updatedAt": "2026-02-21T14:09:09.109Z"
+    "updatedAt": "2026-02-21T20:06:38.000Z"
   },
   {
     "_id": "bc2ffd7b-1082-4d33-b039-105d3e49e64d",
@@ -61,7 +65,7 @@
     "updatedAt": "2026-02-21T14:27:15.000Z"
   },
   {
-    "_id": "de4fff9d-3204-6f55-d25b-327f5f6bg86f",
+    "_id": "de4fff9d-3204-6f55-d25b-327f5f6b086f",
     "name": "Mansi Sharma",
     "email": "mansi@thesenses.dev",
     "username": "mansisharma",
