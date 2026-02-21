@@ -333,4 +333,40 @@ router.get("/linkedin/callback", async (req, res) => {
  */
 router.post("/oauth/callback", oauthCallback);
 
+/**
+ * POST /auth/admin/reset-password
+ * Admin-only password reset. Protected by ADMIN_SECRET env var.
+ * Header: x-admin-secret: <ADMIN_SECRET>
+ * Body: { email, newPassword }
+ */
+router.post("/admin/reset-password", async (req, res) => {
+    try {
+        const secret = req.headers['x-admin-secret'];
+        if (!process.env.ADMIN_SECRET || secret !== process.env.ADMIN_SECRET) {
+            return res.status(403).json({ success: false, error: 'Forbidden' });
+        }
+
+        const { email, newPassword } = req.body;
+        if (!email || !newPassword) {
+            return res.status(400).json({ success: false, error: 'email and newPassword required' });
+        }
+
+        const bcrypt = require('bcryptjs');
+        const User = require('../models/User');
+
+        const user = await User.findOne({ email: email.toLowerCase() });
+        if (!user) {
+            return res.status(404).json({ success: false, error: `No user found with email: ${email}` });
+        }
+
+        const hash = await bcrypt.hash(newPassword, 12);
+        user.password = hash;
+        await user.save();
+
+        res.json({ success: true, message: `Password updated for ${user.name} (${user.email})` });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 module.exports = router;
