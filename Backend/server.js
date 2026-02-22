@@ -83,6 +83,9 @@ app.use(cors({
         // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         if (enforceCorsOriginCheck && allowedOrigins.indexOf(origin) === -1) {
+            if (origin.endsWith('.vercel.app')) {
+                return callback(null, true);
+            }
             var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
             return callback(new Error(msg), false);
         }

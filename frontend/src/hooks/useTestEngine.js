@@ -15,7 +15,7 @@ export const useTestEngine = () => {
 
     // Timer Logic
     useEffect(() => {
-        if (state.status === 'running' && state.timeRemaining > 0) {
+        if (state.status === 'running') {
             timerRef.current = setInterval(() => {
                 dispatch({ type: ACTIONS.TICK_TIMER });
             }, 1000);
@@ -24,7 +24,7 @@ export const useTestEngine = () => {
         }
 
         return () => clearInterval(timerRef.current);
-    }, [state.status, state.timeRemaining]);
+    }, [state.status]);
 
     // Dispatch Wrappers
     const startTest = useCallback((duration = 1800) => {

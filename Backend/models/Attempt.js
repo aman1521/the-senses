@@ -9,14 +9,12 @@ const mongoose = require("mongoose");
 const AttemptSchema = new mongoose.Schema({
   // Core Relationships
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
     required: true,
     index: true
   },
   question: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Question",
+    type: String,
     required: true
   },
   sessionId: {

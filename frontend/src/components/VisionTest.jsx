@@ -31,6 +31,14 @@ const VisionTest = ({ onComplete }) => {
                 handleVisionData(data);
             };
 
+            wsRef.current.onerror = (e) => {
+                console.error("WS connection error", e);
+                if (status === 'connecting') {
+                    // Fallback so it doesn't hang
+                    setTimeout(() => onComplete(50), 3000);
+                }
+            };
+
             wsRef.current.onclose = () => {
                 console.log('Vision WS Closed');
             };

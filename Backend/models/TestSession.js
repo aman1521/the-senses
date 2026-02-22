@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const TestSessionSchema = new mongoose.Schema({
     sessionId: { type: String, required: true, unique: true }, // UUID
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Optional for guest/unclaimed
+    userId: { type: String }, // Optional for guest/unclaimed
     status: {
         type: String,
         enum: ['started', 'video_intro', 'skill_test', 'psych_test', 'completed', 'invalidated'],

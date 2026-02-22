@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "_id": "5f3cc8d6-f492-4211-89c6-2e9c0482331e",
+    "sessionId": "session-1771756251518",
+    "userId": "dummy",
+    "country": "global",
+    "share": {
+      "slug": "observer-d449",
+      "headline": "Observer - Top 100%"
+    },
+    "profile": {
+      "thinkingStyle": "Observer",
+      "strengths": [
+        "Data Analysis",
+        "Logical Reasoning",
+        "Consistency"
+      ],
+      "cognitiveBiases": [
+        "Confirmation Bias",
+        "Anchoring"
+      ],
+      "summary": "You are methodical and logical."
+    },
+    "rank": {
+      "tier": "Observer",
+      "globalPercentile": 50,
+      "globalRank": 1,
+      "countryRank": 1,
+      "field": "software-engineer"
+    },
+    "finalScore": 11,
+    "normalizedScore": 16,
+    "difficulty": "medium",
+    "trustScore": 50,
+    "badge": "Observer",
+    "testHash": "2a059c3ba5f8a023a87cf959cfe66239cdbbf3bb6002311634cda282ca9658f2",
+    "testDetail": {
+      "questions": [],
+      "totalQuestions": 1,
+      "correctCount": 1,
+      "completionTime": 0
+    },
+    "behaviorAnalysis": {
+      "focusLossRate": 0,
+      "integrityMultiplier": 1,
+      "confidenceLevel": "high",
+      "cheatRisk": 0,
+      "avgResponseLatency": 0,
+      "latencyVariance": 0,
+      "pasteFrequency": 0,
+      "idleAnomalies": false
+    },
+    "isFinalized": true,
+    "createdAt": "2026-02-22T10:30:51.519Z",
+    "updatedAt": "2026-02-22T10:30:51.519Z"
+  },
+  {
+    "_id": "48dd7d10-4eb0-4e26-b2eb-7aa9b080a672",
+    "sessionId": "session-1771756308114",
+    "userId": "60c72b2f9b1d8b001c8e4b7b",
+    "country": "global",
+    "share": {
+      "slug": "observer-4d31",
+      "headline": "Observer - Top 100%"
+    },
+    "profile": {
+      "thinkingStyle": "Observer",
+      "strengths": [
+        "Data Analysis",
+        "Logical Reasoning",
+        "Consistency"
+      ],
+      "cognitiveBiases": [
+        "Confirmation Bias",
+        "Anchoring"
+      ],
+      "summary": "You are methodical and logical."
+    },
+    "rank": {
+      "tier": "Observer",
+      "globalPercentile": 50,
+      "globalRank": 1,
+      "countryRank": 1,
+      "field": "software-engineer"
+    },
+    "finalScore": 11,
+    "normalizedScore": 16,
+    "difficulty": "medium",
+    "trustScore": 50,
+    "badge": "Observer",
+    "testHash": "94a9988f46cd5624c123b818d60b658ffca846121ed3d15a9bed6e37e4882a84",
+    "testDetail": {
+      "questions": [],
+      "totalQuestions": 1,
+      "correctCount": 1,
+      "completionTime": 0
+    },
+    "behaviorAnalysis": {
+      "focusLossRate": 0,
+      "integrityMultiplier": 1,
+      "confidenceLevel": "high",
+      "cheatRisk": 0,
+      "avgResponseLatency": 0,
+      "latencyVariance": 0,
+      "pasteFrequency": 0,
+      "idleAnomalies": false
+    },
+    "isFinalized": true,
+    "createdAt": "2026-02-22T10:31:48.115Z",
+    "updatedAt": "2026-02-22T10:31:48.115Z"
+  }
+]

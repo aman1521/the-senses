@@ -32,7 +32,7 @@ const ProfilePage = () => {
         try {
             let fetchedUser = null;
 
-            if (username === 'me') {
+            if (username === 'me' || isOwnProfile) {
                 const res = await getMyProfile();
                 // getMyProfile returns the user object directly (legacy controller)
                 fetchedUser = res.data;

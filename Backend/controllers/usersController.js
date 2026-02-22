@@ -128,11 +128,8 @@ exports.getPublicProfile = async (req, res) => {
     // If still not found, try searching by name (slugified) or just name? 
     // This is risky if names are not unique, but useful for "rishitatrivedi" if name is "Rishita Trivedi"
     if (!user) {
-      // Try to match name by removing spaces
-      // This is a heavy query, but fine for fallback
-      // We can't do regex on calculated fields easily in Mongo without aggregation, 
-      // so let's just try exact name match if username looks like a name
-      user = await User.findOne({ name: { $regex: new RegExp(`^${username}$`, 'i') } }).select('-password -__v -oauthId -oauthProvider');
+      const spacedPattern = username.split('').join('\\s*');
+      user = await User.findOne({ name: { $regex: new RegExp(`^${spacedPattern}$`, 'i') } }).select('-password -__v -oauthId -oauthProvider');
     }
 
     // Attempt to match "FirstLast" to "First Last"
