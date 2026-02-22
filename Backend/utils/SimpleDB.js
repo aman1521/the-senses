@@ -50,12 +50,13 @@ class SimpleDB {
         return this._wrapCursor(wrapped ? [wrapped] : [], true);
     }
 
-    async findById(id) {
+    findById(id) {
         this.load();
         // Handle MongoDB ObjectId or String ID
-        const targetId = id.toString();
+        const targetId = id ? id.toString() : '';
         const item = this.data.find(i => i._id.toString() === targetId || i.id === targetId);
-        return item ? this._wrapInstance(item) : null;
+        const wrapped = item ? this._wrapInstance(item) : null;
+        return this._wrapCursor(wrapped ? [wrapped] : [], true);
     }
 
     async create(doc) {
