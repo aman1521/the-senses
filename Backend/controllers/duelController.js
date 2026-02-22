@@ -3,7 +3,7 @@ const Duel = require("../models/Duel");
 const Question = require("../models/Question");
 const IntelligenceResult = require("../models/IntelligenceResult");
 const { analyzeIntelligence } = require("../ai-agents/profile-intelligence/analyzer");
-const { sendDuelInvitation, sendDuelResult } = require("../services/emailService");
+const { sendDuelInvitation, sendDuelResult } = require("../Services/emailService");
 
 // Config
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';

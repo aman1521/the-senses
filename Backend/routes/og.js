@@ -1,5 +1,5 @@
 const express = require("express");
-const { createCanvas, registerFont } = require("canvas");
+const { createCanvas, GlobalFonts } = require("@napi-rs/canvas");
 const { getResultBySlug } = require("../Services/resultService.js");
 const path = require("path");
 

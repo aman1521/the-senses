@@ -4,7 +4,7 @@
 
 require('dotenv').config();
 const mongoose = require('mongoose');
-const { pregenerateQuestionsForAllProfiles } = require('../services/questionService');
+const { pregenerateQuestionsForAllProfiles } = require('../Services/questionService');
 
 async function main() {
     try {

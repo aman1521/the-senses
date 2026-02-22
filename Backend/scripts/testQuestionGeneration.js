@@ -10,7 +10,7 @@ dotenv.config({ path: path.join(__dirname, "../.env") });
 
 const connectDB = require("../config/db");
 const { generateQuestionsForProfile } = require("../ai-agents/questions/questionGenerator");
-const { getQuestionsForTest, pregenerateQuestionsForAllProfiles } = require("../services/questionService");
+const { getQuestionsForTest, pregenerateQuestionsForAllProfiles } = require("../Services/questionService");
 const QuestionBank = require("../models/QuestionBank");
 
 async function testQuestionGeneration() {

@@ -245,7 +245,7 @@ exports.likePost = async (req, res) => {
             post.likedBy.push(userId);
 
             // Trigger Real-Time Notification
-            const { createInAppNotification } = require('../services/inAppNotificationService');
+            const { createInAppNotification } = require('../Services/inAppNotificationService');
             await createInAppNotification(req, {
                 recipient: post.author,
                 type: 'social_like',
@@ -319,7 +319,7 @@ exports.commentOnPost = async (req, res) => {
         await updateEngagementScore(post);
 
         // Trigger Real-Time Notification
-        const { createInAppNotification } = require('../services/inAppNotificationService');
+        const { createInAppNotification } = require('../Services/inAppNotificationService');
         await createInAppNotification(req, {
             recipient: post.author,
             type: 'social_comment',

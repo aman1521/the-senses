@@ -11,7 +11,7 @@ const IntelligenceResult = require("../models/IntelligenceResult.js");
 const { upsertUserProfile } = require("../ai-agents/profile/profileService.js");
 const { evaluationSchema } = require("../validators/evaluationSchema.js");
 const { audit } = require("../utils/auditLog.js");
-const { saveEvaluationResult } = require("../services/resultService.js");
+const { saveEvaluationResult } = require("../Services/resultService.js");
 const { checkRetakeCooldown, getCooldownStatus } = require("../middleware/retakeCooldown.js");
 
 const TestSession = require("../models/TestSession.js");
@@ -768,7 +768,7 @@ router.post("/evaluate", auth(false), checkRetakeCooldown, async (req, res, next
 router.get("/result/:slug", async (req, res, next) => {
     try {
         const { slug } = req.params;
-        const { getResultBySlug } = require("../services/resultService.js");
+        const { getResultBySlug } = require("../Services/resultService.js");
 
         const result = await getResultBySlug(slug);
         if (!result) {
@@ -795,7 +795,7 @@ router.get("/result/:slug", async (req, res, next) => {
 router.get("/review/:sessionId", async (req, res, next) => {
     try {
         const { sessionId } = req.params;
-        const { getResultBySessionId } = require("../services/resultService.js");
+        const { getResultBySessionId } = require("../Services/resultService.js");
 
         const result = await getResultBySessionId(sessionId);
         if (!result) {

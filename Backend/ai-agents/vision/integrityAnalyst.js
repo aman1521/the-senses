@@ -1,5 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { uploadToGemini } = require("../../services/aiFileManager");
+const { uploadToGemini } = require("../../Services/aiFileManager");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
