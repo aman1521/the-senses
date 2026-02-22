@@ -62,6 +62,7 @@ const Navbar = () => {
 
                 {/* Nav Links */}
                 <div className="hidden lg:flex items-center gap-6">
+                    <NavLink to="/dashboard" label="Dashboard" icon={<i className="fa-solid fa-chart-line"></i>} active={location.pathname === '/dashboard'} />
                     <NavLink to="/methodology" label="Science" icon={<i className="fa-solid fa-flask"></i>} active={location.pathname === '/methodology'} />
                     <NavLink to="/profile-selection" label="Assessment" icon={<i className="fa-solid fa-clipboard-check"></i>} active={location.pathname === '/profile-selection'} />
                     <NavLink to="/leaderboard" label="Leaderboard" icon={<i className="fa-solid fa-trophy"></i>} active={location.pathname === '/leaderboard'} />

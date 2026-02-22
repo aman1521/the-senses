@@ -21,6 +21,7 @@ const ProfileDropdown = ({ user, onLogout }) => {
     const menuItems = [
         { label: 'View Profile', icon: 'fa-regular fa-user', path: `/profile/${user.username || 'me'}` },
         { label: 'Edit Profile', icon: 'fa-solid fa-pen-to-square', action: () => navigate(`/profile/${user.username || 'me'}?edit=true`) },
+        { label: 'My Dashboard', icon: 'fa-solid fa-chart-line', path: '/dashboard' },
         { label: 'My Ranking', icon: 'fa-solid fa-trophy', path: '/ranking/me' },
         { label: 'Posts & Activity', icon: 'fa-solid fa-layer-group', path: `/profile/${user.username || 'me'}?tab=activity` },
         { label: 'My Companies', icon: 'fa-solid fa-building', path: '/companies' },
@@ -63,6 +64,7 @@ const ProfileDropdown = ({ user, onLogout }) => {
                     <div className="p-2 space-y-1">
                         {[
                             { label: 'Edit Profile', icon: 'fa-solid fa-pen-to-square', path: `/profile/me` }, // Redirects to profile which has edit button
+                            { label: 'My Dashboard', icon: 'fa-solid fa-chart-line', path: '/dashboard' },
                             { label: 'My Ranking', icon: 'fa-solid fa-trophy', path: '/ranking/me' },
                             { label: 'My Companies', icon: 'fa-solid fa-building', path: '/companies' },
                             { type: 'divider' },
