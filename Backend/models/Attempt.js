@@ -90,4 +90,35 @@ AttemptSchema.index({ user: 1, sessionId: 1 });
 AttemptSchema.index({ "rubric.bins.logic": -1 });
 AttemptSchema.index({ "rubric.bins.creativity": -1 });
 
-module.exports = mongoose.model("Attempt", AttemptSchema);
+const AttemptModel = mongoose.model("Attempt", AttemptSchema);
+
+const SimpleDB = require('../utils/SimpleDB');
+const AttemptMock = new SimpleDB('attempts');
+
+module.exports = new Proxy(AttemptModel, {
+  get: function (target, prop) {
+    if (global.USE_MOCK_DB) {
+      if (prop === 'find') return (query) => AttemptMock.find(query);
+      if (prop === 'findOne') return (query) => AttemptMock.findOne(query);
+      if (prop === 'findById') return (id) => AttemptMock.findById(id);
+      if (prop === 'create') return (doc) => AttemptMock.create(doc);
+      if (prop === 'insertMany') return async (docs) => {
+        for (let doc of docs) await AttemptMock.create(doc);
+        return docs;
+      };
+    }
+    return target[prop];
+  },
+  construct: function (target, [doc]) {
+    if (global.USE_MOCK_DB) {
+      const instance = { ...doc };
+      instance.save = async function () {
+        const saved = await AttemptMock.create(this);
+        Object.assign(this, saved);
+        return this;
+      };
+      return instance;
+    }
+    return new target(doc);
+  }
+});

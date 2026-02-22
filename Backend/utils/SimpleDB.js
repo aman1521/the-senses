@@ -36,16 +36,18 @@ class SimpleDB {
     }
 
     // Mongoose-like static methods
-    async find(query = {}) {
+    find(query = {}) {
         this.load();
         let results = this.data.filter(item => this._matches(item, query));
         return this._wrapCursor(results);
     }
 
-    async findOne(query = {}) {
+    findOne(query = {}) {
         this.load();
         const item = this.data.find(item => this._matches(item, query));
-        return item ? this._wrapInstance(item) : null;
+        const wrapped = item ? this._wrapInstance(item) : null;
+        // make it chainable
+        return this._wrapCursor(wrapped ? [wrapped] : [], true);
     }
 
     async findById(id) {
@@ -95,7 +97,7 @@ class SimpleDB {
     }
 
     // Helper to wrap results in a chainable object (for sort, limit, populate)
-    _wrapCursor(results) {
+    _wrapCursor(results, isSingle = false) {
         const cursor = {
             results: results,
             sort: (criteria) => {
@@ -113,6 +115,10 @@ class SimpleDB {
             },
             limit: (n) => {
                 cursor.results = cursor.results.slice(0, n);
+                return cursor;
+            },
+            select: (fields) => {
+                // Mock NO-OP for select
                 return cursor;
             },
             populate: (populateField, select) => {
@@ -141,8 +147,8 @@ class SimpleDB {
                 });
                 return cursor;
             },
-            lean: () => cursor.results,
-            then: (resolve, reject) => Promise.resolve(cursor.results).then(resolve, reject),
+            lean: () => isSingle ? (cursor.results[0] || null) : cursor.results,
+            then: (resolve, reject) => Promise.resolve(isSingle ? (cursor.results[0] || null) : cursor.results).then(resolve, reject),
             // Iterate
             map: (fn) => cursor.results.map(fn)
         };

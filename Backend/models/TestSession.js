@@ -25,4 +25,31 @@ const TestSessionSchema = new mongoose.Schema({
     cheatingFlags: { type: [String], default: [] }
 }, { timestamps: true });
 
-module.exports = mongoose.model('TestSession', TestSessionSchema);
+const TestSessionModel = mongoose.model('TestSession', TestSessionSchema);
+
+const SimpleDB = require('../utils/SimpleDB');
+const TestSessionMock = new SimpleDB('test_sessions');
+
+module.exports = new Proxy(TestSessionModel, {
+    get: function (target, prop) {
+        if (global.USE_MOCK_DB) {
+            if (prop === 'find') return (query) => TestSessionMock.find(query);
+            if (prop === 'findOne') return (query) => TestSessionMock.findOne(query);
+            if (prop === 'findById') return (id) => TestSessionMock.findById(id);
+            if (prop === 'create') return (doc) => TestSessionMock.create(doc);
+        }
+        return target[prop];
+    },
+    construct: function (target, [doc]) {
+        if (global.USE_MOCK_DB) {
+            const instance = { ...doc };
+            instance.save = async function () {
+                const saved = await TestSessionMock.create(this);
+                Object.assign(this, saved);
+                return this;
+            };
+            return instance;
+        }
+        return new target(doc);
+    }
+});

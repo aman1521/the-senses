@@ -6,3 +6,5 @@ node_modules/
 public/share/*.png
 .vscode/
 .idea/
+Data/*.json
+data/*.json

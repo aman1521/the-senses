@@ -21,6 +21,13 @@ const IntelligenceResult = require("../models/IntelligenceResult");
 
 async function getQuestionsForTest(profileId, difficulty = "medium", count = 30, userId = null) {
     try {
+        if (global.USE_MOCK_DB) {
+            console.log(`⚠️ Mock DB active. Fetching live AI questions for ${profileId} (skipping DB)`);
+            const generatedQuestions = await generateQuestionsForProfile(profileId, count, difficulty);
+            const qsWithIds = generatedQuestions.map((q, i) => ({ ...q, _id: `mock_ai_q_${Date.now()}_${i}` }));
+            return formatQuestionsForTest(qsWithIds);
+        }
+
         let excludeIds = [];
 
         // 1. If User is logged in, fetch their history to prevent repeats

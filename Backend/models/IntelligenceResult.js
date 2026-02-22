@@ -131,6 +131,14 @@ module.exports = new Proxy(ResultModel, {
       if (prop === 'findOne') return (query) => ResultMock.findOne(query);
       if (prop === 'findById') return (id) => ResultMock.findById(id);
       if (prop === 'create') return (doc) => ResultMock.create(doc);
+      if (prop === 'countDocuments') return (query) => ResultMock.countDocuments(query);
+      if (prop === 'insertMany') return async (docs) => {
+        const arr = [];
+        for (let doc of docs) arr.push(await ResultMock.create(doc));
+        return arr;
+      };
+      if (prop === 'aggregate') return async () => [];
+      if (prop === 'deleteMany') return async () => ({ deletedCount: 0 });
     }
     return target[prop];
   },

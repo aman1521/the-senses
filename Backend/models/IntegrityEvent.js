@@ -105,5 +105,35 @@ IntegrityEventSchema.index({ eventType: 1 });
 IntegrityEventSchema.index({ severity: 1 });
 IntegrityEventSchema.index({ reviewed: 1, severity: 1 });
 
-module.exports = mongoose.model('IntegrityEvent', IntegrityEventSchema);
+const IntegrityEventModel = mongoose.model('IntegrityEvent', IntegrityEventSchema);
 
+const SimpleDB = require('../utils/SimpleDB');
+const IntegrityEventMock = new SimpleDB('integrity_events');
+
+module.exports = new Proxy(IntegrityEventModel, {
+    get: function (target, prop) {
+        if (global.USE_MOCK_DB) {
+            if (prop === 'find') return (query) => IntegrityEventMock.find(query);
+            if (prop === 'findOne') return (query) => IntegrityEventMock.findOne(query);
+            if (prop === 'findById') return (id) => IntegrityEventMock.findById(id);
+            if (prop === 'create') return (doc) => IntegrityEventMock.create(doc);
+            if (prop === 'insertMany') return async (docs) => {
+                for (let doc of docs) await IntegrityEventMock.create(doc);
+                return docs;
+            };
+        }
+        return target[prop];
+    },
+    construct: function (target, [doc]) {
+        if (global.USE_MOCK_DB) {
+            const instance = { ...doc };
+            instance.save = async function () {
+                const saved = await IntegrityEventMock.create(this);
+                Object.assign(this, saved);
+                return this;
+            };
+            return instance;
+        }
+        return new target(doc);
+    }
+});

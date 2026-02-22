@@ -47,7 +47,11 @@ async function saveEvaluationResult({
 }) {
   try {
     // Generate unique slug
-    // ... [omitted unchanged lines] ...
+    const slug = generateSlug(profile?.thinkingStyle);
+    const share = {
+      slug,
+      headline: insights?.headline || "Global Intelligence Ranking",
+    };
 
     // Create result document
     const result = await IntelligenceResult.create({
