@@ -1,9 +1,9 @@
 const OpenAI = require("openai");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const openai = new OpenAI({
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
-});
+}) : null;
 
 const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
 
@@ -17,6 +17,7 @@ const PERSONAS = {
 };
 
 async function callOpenAI(persona, prompt) {
+    if (!openai) throw new Error("OpenAI API key not configured");
     const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [

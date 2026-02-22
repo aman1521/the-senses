@@ -1,11 +1,12 @@
 // ai-agents/llm/llmClient.js
 import OpenAI from "openai";
 
-const openai = new OpenAI({
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-});
+}) : null;
 
 export async function callLLM(prompt) {
+  if (!openai) throw new Error("OpenAI API key not configured");
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
