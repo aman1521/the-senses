@@ -3,7 +3,7 @@ const router = express.Router();
 const MarketUpdate = require('../models/MarketUpdate');
 const User = require('../models/User'); // Need to get user profile if not in req.user
 const { auth } = require('../middleware/auth');
-const { JOB_PROFILES } = require('../data/jobProfiles');
+const { JOB_PROFILES } = require('../Data/jobProfiles');
 
 // @route   GET /api/market-updates/feed
 // @desc    Get updates tailored to the logged-in user's profile

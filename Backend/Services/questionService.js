@@ -5,7 +5,7 @@
 const QuestionBank = require("../models/QuestionBank");
 const mongoose = require("mongoose");
 const { generateQuestionsForProfile } = require("../ai-agents/questions/questionGenerator");
-const { getProfileById } = require("../data/jobProfiles");
+const { getProfileById } = require("../Data/jobProfiles");
 
 // In-memory cache for frequently accessed questions
 const questionCache = new Map();
@@ -120,7 +120,7 @@ async function generateAndSaveQuestions(profileId, difficulty, count) {
  * INCREASED TARGET: Now aims for 200 questions per profile/difficulty
  */
 async function pregenerateQuestionsForAllProfiles() {
-    const { JOB_PROFILES } = require("../data/jobProfiles");
+    const { JOB_PROFILES } = require("../Data/jobProfiles");
     const difficulties = ["easy", "medium", "hard"];
     const TARGET_PER_DIFFICULTY = 200; // Increased from 100
 

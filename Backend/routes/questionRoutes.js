@@ -12,7 +12,7 @@ const {
     getFlaggedQuestions,
     clearCache,
 } = require("../Services/questionService"); // Casing fixed for Linux compatibility
-const { JOB_PROFILES, getAllActiveProfiles } = require("../data/jobProfiles");
+const { JOB_PROFILES, getAllActiveProfiles } = require("../Data/jobProfiles");
 const { successResponse, errorResponse } = require("../utils/apiResponse");
 
 // GET /api/questions/profiles - Get all available job profiles

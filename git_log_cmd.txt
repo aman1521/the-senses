@@ -1,0 +1,29 @@
+commit 36b4769835ddda1bd501954ddaff12ba46465451
+Author: AI Assistant <ai@thesenses.com>
+Date:   Tue Feb 24 22:23:15 2026 +0530
+
+    Add fallback start and postinstall scripts to root package.json for Render compatibility
+
+commit a121636cd12eadbad89c1dd1baaec095da225215
+Author: AI Assistant <ai@thesenses.com>
+Date:   Tue Feb 24 22:16:04 2026 +0530
+
+    Added mongoose dependency and enforced Backend root directory
+
+commit 817b325a75f421b2f139f6def4178a1e721d8da5
+Author: AI Assistant <ai@thesenses.com>
+Date:   Tue Feb 24 22:05:15 2026 +0530
+
+    Added cors dependency
+
+commit fa13fb9f4d081dafb47f72e06afe3b4bd4a992b3
+Author: AI Assistant <ai@thesenses.com>
+Date:   Tue Feb 24 21:56:48 2026 +0530
+
+    Add start script to root package.json for Render deployment
+
+commit 95e6d284822a7098766ac3dd9c78111bab5dc84c
+Author: AI Assistant <ai@thesenses.com>
+Date:   Tue Feb 24 21:10:12 2026 +0530
+
+    Integrate user OpenAI key with AI Question Generator Engine
