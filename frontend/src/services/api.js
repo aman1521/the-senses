@@ -46,10 +46,25 @@ export const API = axios.create({
 });
 
 if (!baseURL && typeof window !== "undefined") {
-  console.warn(
-    "API base URL is not configured. Set VITE_API_URL (or VITE_BACKEND_URL) for production deployments."
-  );
+  try {
+    console.warn(
+      "API base URL is not configured. Set VITE_API_URL (or VITE_BACKEND_URL/VITE_API_BASE) for production deployments.",
+      {
+        VITE_API_URL: import.meta.env.VITE_API_URL || null,
+        VITE_BACKEND_URL: import.meta.env.VITE_BACKEND_URL || null,
+        VITE_API_BASE: import.meta.env.VITE_API_BASE || null,
+        windowHostname: window.location.hostname,
+        windowOrigin: window.location.origin,
+        note: "Frontend will fallback to http://localhost:5000 during local development only. In production, leave this configured in Vercel."
+      }
+    );
+  } catch (e) {
+    // swallow in environments where console may be restricted
+  }
 }
+
+// Expose resolved base for runtime inspection
+export const RESOLVED_API_BASE = baseURL;
 
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
