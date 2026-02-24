@@ -3,10 +3,12 @@
 // Phase 2.5: Dynamic Profile-Specific Questions
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const OpenAI = require("openai");
 const { JOB_PROFILES, getProfileById } = require("../../data/jobProfiles");
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// Initialize AIs
+const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 /**
  * Generate questions for a specific job profile using AI
@@ -53,16 +55,34 @@ async function generateQuestionsForProfile(profileId, count = 30, difficulty = "
 
         console.log(`🤖 Generating ${count} ${difficulty} questions for ${profile.name} (${experienceLevel} Level)...`);
 
-        const model = genAI.getGenerativeModel({ model: modelName });
-
         const prompt = buildQuestionPrompt(profile, count, difficulty, experienceLevel);
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        let text = "";
+        let usage = {};
+
+        if (openai) {
+            modelName = process.env.AI_MODEL || "gpt-4o-mini";
+            const response = await openai.chat.completions.create({
+                model: modelName,
+                messages: [
+                    { role: "system", content: "You are an expert test designer creating professional intelligence assessments." },
+                    { role: "user", content: prompt }
+                ],
+                temperature: 0.7,
+            });
+            text = response.choices[0].message.content;
+            usage = response.usage || {};
+        } else if (genAI) {
+            const model = genAI.getGenerativeModel({ model: modelName });
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            text = response.text();
+            usage = response.usageMetadata || {};
+        } else {
+            throw new Error("No AI API keys are configured (OpenAI or Gemini)");
+        }
 
         // Extract token usage if available
-        const usage = response.usageMetadata || {};
 
         // Log success metric
         await AIMetrics.create({
