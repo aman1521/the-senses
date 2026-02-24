@@ -12,6 +12,19 @@ export const resolveApiBaseURL = () => {
     import.meta.env.VITE_BACKEND_URL ||
     import.meta.env.VITE_API_BASE
   );
+  // Security / Fallback Check:
+  // If the browser is running on the live internet (like Vercel), but the
+  // configured Vite URL was compiled with localhost (via .env accident),
+  // forcefully override to the live backend to avoid "Network Errors"!
+  if (typeof window !== "undefined" && !isLocalHost(window.location.hostname)) {
+    try {
+      if (!configuredUrl || isLocalHost(new URL(configuredUrl || "http://localhost").hostname)) {
+        console.warn("Deployed site incorrectly targeting localhost. Falling back to live API...");
+        // Assuming api.thesenses.ai is the target or the Render URL
+        return import.meta.env.VITE_PROD_API_URL || "https://api.thesenses.ai";
+      }
+    } catch (e) { }
+  }
 
   if (configuredUrl) {
     return configuredUrl;
