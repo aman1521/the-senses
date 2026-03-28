@@ -26,6 +26,7 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [passwordStrength, setPasswordStrength] = useState({ score: 0, label: "", color: "" });
     const apiBaseURL = resolveApiBaseURL();
+    console.log("API BASE URL:", apiBaseURL);
 
     // Check OAuth availability on mount
     useEffect(() => {
