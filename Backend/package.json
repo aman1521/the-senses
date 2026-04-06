@@ -9,6 +9,7 @@
     "import": "node tools/import-questions.cjs"
   },
   "dependencies": {
+    "@google/genai": "^1.48.0",
     "@google/generative-ai": "^0.24.1",
     "@napi-rs/canvas": "^0.1.94",
     "@thesenses/core": "file:../packages/core",

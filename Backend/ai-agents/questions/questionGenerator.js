@@ -2,12 +2,12 @@
 // AI-Powered Question Generation System
 // Phase 2.5: Dynamic Profile-Specific Questions
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI } = require("@google/genai");
 const OpenAI = require("openai");
 const { JOB_PROFILES, getProfileById } = require("../../Data/jobProfiles");
 
 // Initialize AIs
-const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
+const genAI = process.env.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 /**
@@ -28,7 +28,7 @@ const AIMetrics = require("../../models/AIMetrics");
  */
 async function generateQuestionsForProfile(profileId, count = 30, difficulty = "medium", experienceLevel = "mid") {
     const startTime = Date.now();
-    let modelName = "gemini-1.5-flash";
+    let modelName = "gemini-2.0-flash"; // Updated to newest Gemini model (closest to Gemma 4 / Gemini 2.0 requests)
 
     try {
         let profile = getProfileById(profileId);
@@ -60,7 +60,15 @@ async function generateQuestionsForProfile(profileId, count = 30, difficulty = "
         let text = "";
         let usage = {};
 
-        if (openai) {
+        if (genAI) {
+            modelName = process.env.AI_MODEL || "gemini-2.0-flash";
+            const response = await genAI.models.generateContent({
+                model: modelName,
+                contents: prompt,
+            });
+            text = response.text;
+            usage = response.usageMetadata || {};
+        } else if (openai) {
             modelName = process.env.AI_MODEL || "gpt-4o-mini";
             const response = await openai.chat.completions.create({
                 model: modelName,
@@ -72,12 +80,6 @@ async function generateQuestionsForProfile(profileId, count = 30, difficulty = "
             });
             text = response.choices[0].message.content;
             usage = response.usage || {};
-        } else if (genAI) {
-            const model = genAI.getGenerativeModel({ model: modelName });
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            text = response.text();
-            usage = response.usageMetadata || {};
         } else {
             throw new Error("No AI API keys are configured (OpenAI or Gemini)");
         }
